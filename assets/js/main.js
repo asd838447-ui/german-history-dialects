@@ -136,31 +136,39 @@ function initNavDropdown() {
     var menu = dropdown.querySelector(".dropdown-menu");
     if (!trigger || !menu) return;
 
-    var timer = null;
+    var closeTimer = null;
 
     function openMenu() {
-      if (timer) {
-        clearTimeout(timer);
-        timer = null;
+      if (closeTimer) {
+        clearTimeout(closeTimer);
+        closeTimer = null;
       }
       dropdown.classList.add("is-open");
     }
 
-    function closeMenuGracefully() {
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(function () {
-        dropdown.classList.remove("is-open");
-      }, 400); // 400ms buffer allows free mouse movement without abrupt closing
+    function scheduleClose() {
+      if (closeTimer) clearTimeout(closeTimer);
+      closeTimer = setTimeout(function () {
+        if (!dropdown.classList.contains("is-pinned")) {
+          dropdown.classList.remove("is-open");
+        }
+      }, 700);
     }
 
     dropdown.addEventListener("mouseenter", openMenu);
-    dropdown.addEventListener("mouseleave", closeMenuGracefully);
+    dropdown.addEventListener("mouseleave", scheduleClose);
+    menu.addEventListener("mouseenter", openMenu);
+    menu.addEventListener("mouseleave", scheduleClose);
 
+    // Click toggles permanent open state so the user can freely move mouse over window
     trigger.addEventListener("click", function (e) {
       e.preventDefault();
-      if (dropdown.classList.contains("is-open")) {
+      e.stopPropagation();
+      if (dropdown.classList.contains("is-pinned")) {
+        dropdown.classList.remove("is-pinned");
         dropdown.classList.remove("is-open");
       } else {
+        dropdown.classList.add("is-pinned");
         dropdown.classList.add("is-open");
       }
     });
@@ -168,8 +176,9 @@ function initNavDropdown() {
 
   document.addEventListener("click", function (e) {
     if (!e.target.closest(".dropdown")) {
-      document.querySelectorAll(".dropdown.is-open").forEach(function (d) {
+      document.querySelectorAll(".dropdown").forEach(function (d) {
         d.classList.remove("is-open");
+        d.classList.remove("is-pinned");
       });
     }
   });

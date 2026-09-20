@@ -58,11 +58,10 @@ body {
 /* Верхний колонтитул */
 .site-header {
   position: relative;
-  z-index: 1000;
+  z-index: 999999;
   border-bottom: 2px solid var(--line-dark);
   padding: 1.25rem 0;
   background-color: var(--bg-paper);
-  backdrop-filter: blur(4px);
 }
 
 .header-inner {
@@ -122,16 +121,16 @@ body {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: calc(100% + 6px);
+  right: 0;
   background-color: #fdfbf7 !important;
   opacity: 1 !important;
   border: 1px solid var(--line-dark);
-  box-shadow: 0 10px 30px rgba(42, 36, 33, 0.25);
-  min-width: 290px;
+  box-shadow: 0 12px 36px rgba(42, 36, 33, 0.3);
+  min-width: 310px;
   list-style: none;
   padding: 0.5rem 0;
-  z-index: 99999;
+  z-index: 9999999;
   border-radius: 2px;
 }
 
@@ -139,10 +138,10 @@ body {
 .dropdown-menu::before {
   content: "";
   position: absolute;
-  top: -14px;
+  top: -16px;
   left: 0;
   right: 0;
-  height: 14px;
+  height: 16px;
   background: transparent;
 }
 
@@ -173,6 +172,7 @@ body {
   border-bottom: 1px solid var(--line-rule);
   margin-bottom: 2.5rem;
   position: relative;
+  z-index: 1;
 }
 
 .hero::after {
