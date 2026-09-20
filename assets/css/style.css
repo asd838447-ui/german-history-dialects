@@ -57,9 +57,11 @@ body {
 
 /* Верхний колонтитул */
 .site-header {
+  position: relative;
+  z-index: 1000;
   border-bottom: 2px solid var(--line-dark);
   padding: 1.25rem 0;
-  background-color: rgba(253, 251, 247, 0.85);
+  background-color: var(--bg-paper);
   backdrop-filter: blur(4px);
 }
 
@@ -113,6 +115,8 @@ body {
 /* Выпадающее меню глав */
 .dropdown {
   position: relative;
+  padding-bottom: 0.5rem;
+  margin-bottom: -0.5rem;
 }
 
 .dropdown-menu {
@@ -120,25 +124,41 @@ body {
   position: absolute;
   top: 100%;
   left: 0;
-  background: var(--bg-parchment);
+  background-color: #fdfbf7 !important;
+  opacity: 1 !important;
   border: 1px solid var(--line-dark);
-  box-shadow: 0 4px 12px rgba(42, 36, 33, 0.12);
+  box-shadow: 0 10px 30px rgba(42, 36, 33, 0.25);
   min-width: 290px;
   list-style: none;
   padding: 0.5rem 0;
-  z-index: 50;
+  z-index: 99999;
+  border-radius: 2px;
 }
 
-.dropdown:hover .dropdown-menu {
+/* Невидимый мост перекрытия, чтобы меню не закрывалось при движении мыши */
+.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background: transparent;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu,
+.dropdown.is-open .dropdown-menu {
   display: block;
 }
 
 .dropdown-menu li a {
   display: block;
-  padding: 0.45rem 1rem;
+  padding: 0.5rem 1.2rem;
   font-size: 0.9rem;
   color: var(--ink-main);
   border-bottom: none;
+  transition: background-color 0.15s, color 0.15s;
 }
 
 .dropdown-menu li a:hover {

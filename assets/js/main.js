@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+  initNavDropdown();
   initAudio();
   initSurvey();
   initGlossary();
@@ -125,5 +126,51 @@ function initGlossary() {
       var match = el.textContent.toLowerCase().indexOf(q) !== -1;
       el.style.display = match ? "block" : "none";
     });
+  });
+}
+
+function initNavDropdown() {
+  var dropdowns = document.querySelectorAll(".dropdown");
+  dropdowns.forEach(function (dropdown) {
+    var trigger = dropdown.querySelector("a");
+    var menu = dropdown.querySelector(".dropdown-menu");
+    if (!trigger || !menu) return;
+
+    var timer = null;
+
+    function openMenu() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      dropdown.classList.add("is-open");
+    }
+
+    function closeMenuGracefully() {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function () {
+        dropdown.classList.remove("is-open");
+      }, 400); // 400ms buffer allows free mouse movement without abrupt closing
+    }
+
+    dropdown.addEventListener("mouseenter", openMenu);
+    dropdown.addEventListener("mouseleave", closeMenuGracefully);
+
+    trigger.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (dropdown.classList.contains("is-open")) {
+        dropdown.classList.remove("is-open");
+      } else {
+        dropdown.classList.add("is-open");
+      }
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".dropdown")) {
+      document.querySelectorAll(".dropdown.is-open").forEach(function (d) {
+        d.classList.remove("is-open");
+      });
+    }
   });
 }
