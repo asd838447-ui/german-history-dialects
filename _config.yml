@@ -1,0 +1,6 @@
+# GitHub Pages configuration
+# Отключение обработки Jekyll для чистой статической раздачи HTML/CSS/JS
+include:
+  - assets
+  - pages
+theme: null

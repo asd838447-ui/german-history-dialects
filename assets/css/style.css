@@ -1,0 +1,579 @@
+/* Historical cartographic & book design */
+@charset "UTF-8";
+
+:root {
+  --font-body: "Georgia", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  --font-heading: "Garamond", "Baskerville", "Georgia", serif;
+  --font-mono: "Courier New", Courier, monospace;
+
+  --bg-paper: #f7f3eb;
+  --bg-parchment: #fdfbf7;
+  --bg-inset: #efe8dc;
+  
+  --ink-main: #2a2421;
+  --ink-muted: #5c534d;
+  --ink-faded: #8c827a;
+  
+  --rubric-red: #7c2d22;
+  --prussian-blue: #1e3d59;
+  --antique-gold: #9c6f37;
+  --line-rule: #dcd3c4;
+  --line-dark: #b8ab96;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink-main);
+  line-height: 1.75;
+  background-color: var(--bg-paper);
+  background-image: 
+    radial-gradient(ellipse at 15% 10%, rgba(223, 209, 185, 0.45) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 85%, rgba(205, 184, 155, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(245, 237, 224, 0.8) 0%, rgba(235, 223, 205, 0.3) 100%),
+    url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23fff' surfaceScale='1.2'%3E%3CfeDistantLight azimuth='60' elevation='50'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='180' height='180' fill='%23f7f3eb'/%3E%3Crect width='180' height='180' filter='url(%23paper)' opacity='0.07'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+/* Верхний колонтитул */
+.site-header {
+  border-bottom: 2px solid var(--line-dark);
+  padding: 1.25rem 0;
+  background-color: rgba(253, 251, 247, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.site-title {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-main);
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.site-title span {
+  color: var(--rubric-red);
+  font-style: italic;
+  text-transform: none;
+  margin-left: 0.35rem;
+  font-weight: normal;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--ink-main);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px dotted transparent;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--rubric-red);
+  border-bottom-color: var(--rubric-red);
+}
+
+/* Выпадающее меню глав */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  box-shadow: 0 4px 12px rgba(42, 36, 33, 0.12);
+  min-width: 290px;
+  list-style: none;
+  padding: 0.5rem 0;
+  z-index: 50;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  color: var(--ink-main);
+  border-bottom: none;
+}
+
+.dropdown-menu li a:hover {
+  background: var(--bg-inset);
+  color: var(--rubric-red);
+}
+
+/* Титул и героический блок */
+.hero {
+  padding: 3.5rem 0 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--line-rule);
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.hero::after {
+  content: "❧ ❦ ☙";
+  display: block;
+  font-size: 1.2rem;
+  color: var(--antique-gold);
+  margin-top: 1.5rem;
+}
+
+.hero-rubric {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.85rem;
+  color: var(--rubric-red);
+  margin-bottom: 0.75rem;
+}
+
+.hero-title {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  line-height: 1.25;
+  color: var(--ink-main);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+/* Текстовые блоки и карточки */
+.main-content {
+  flex: 1;
+  padding-bottom: 4rem;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--ink-main);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+h2 {
+  font-size: 1.6rem;
+  border-bottom: 1px solid var(--line-dark);
+  padding-bottom: 0.35rem;
+  margin-top: 2.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  color: var(--prussian-blue);
+}
+
+p {
+  margin-bottom: 1.25rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* Старинная буквица */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-heading);
+  font-size: 3.4rem;
+  line-height: 0.85;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  color: var(--rubric-red);
+  font-weight: bold;
+}
+
+/* Блок гипотезы и цитаты */
+.thesis-box {
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  border-left: 4px solid var(--rubric-red);
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+  box-shadow: inset 0 0 15px rgba(220, 211, 196, 0.4);
+}
+
+.thesis-box h3 {
+  margin-top: 0;
+  color: var(--rubric-red);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.thesis-box p {
+  font-style: italic;
+  margin-bottom: 0;
+  font-size: 1.05rem;
+}
+
+blockquote {
+  border-left: 3px solid var(--antique-gold);
+  background: var(--bg-inset);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--ink-main);
+}
+
+blockquote cite {
+  display: block;
+  text-align: right;
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-top: 0.5rem;
+}
+
+/* Сетка глав */
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.chapter-card {
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.chapter-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(42, 36, 33, 0.08);
+  border-color: var(--rubric-red);
+}
+
+.chapter-num {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--rubric-red);
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.chapter-card h3 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+}
+
+.chapter-card p {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+  margin-bottom: 1rem;
+}
+
+.chapter-card a {
+  color: var(--prussian-blue);
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-bottom: 1px dotted var(--prussian-blue);
+  align-self: flex-start;
+}
+
+.chapter-card a:hover {
+  color: var(--rubric-red);
+  border-bottom-color: var(--rubric-red);
+}
+
+/* Иллюстрации и карты */
+.plate {
+  margin: 2.25rem 0;
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  padding: 0.75rem;
+  box-shadow: 0 4px 10px rgba(42, 36, 33, 0.06);
+}
+
+.plate img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line-rule);
+  background: #fff;
+}
+
+.plate-caption {
+  padding: 0.75rem 0.5rem 0.25rem;
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.plate-caption strong {
+  color: var(--ink-main);
+}
+
+.plate-source {
+  font-size: 0.78rem;
+  color: var(--ink-faded);
+  margin-top: 0.35rem;
+}
+
+.plate-source a {
+  color: var(--prussian-blue);
+  text-decoration: underline;
+}
+
+/* Таблицы */
+.table-wrapper {
+  overflow-x: auto;
+  margin: 1.75rem 0;
+}
+
+table.archival-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+}
+
+table.archival-table th,
+table.archival-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line-rule);
+  text-align: left;
+}
+
+table.archival-table th {
+  background: var(--bg-inset);
+  font-family: var(--font-heading);
+  color: var(--ink-main);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--line-dark);
+}
+
+table.archival-table tr:hover {
+  background: rgba(220, 211, 196, 0.25);
+}
+
+/* Звуковые кнопки */
+.audio-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--line-dark);
+  color: var(--ink-main);
+  padding: 0.25rem 0.65rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.2rem;
+}
+
+.audio-btn:hover {
+  background: var(--prussian-blue);
+  color: #fff;
+  border-color: var(--prussian-blue);
+}
+
+/* Опрос */
+.survey-box {
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  padding: 1.75rem;
+  margin: 2rem 0;
+}
+
+.survey-question {
+  margin-bottom: 1.75rem;
+}
+
+.survey-question h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--prussian-blue);
+}
+
+.survey-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.survey-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--line-dark);
+  color: var(--ink-main);
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+.survey-btn:hover {
+  background: #e6decb;
+}
+
+.survey-btn.voted {
+  border-color: var(--rubric-red);
+  background: rgba(124, 45, 34, 0.08);
+}
+
+.survey-bar {
+  height: 4px;
+  background: var(--antique-gold);
+  margin-top: 0.35rem;
+}
+
+/* Глоссарий */
+.glossary-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--bg-parchment);
+  border: 1px solid var(--line-dark);
+  color: var(--ink-main);
+  margin-bottom: 1.5rem;
+}
+
+.glossary-input:focus {
+  outline: none;
+  border-color: var(--rubric-red);
+}
+
+.term-entry {
+  border-bottom: 1px solid var(--line-rule);
+  padding: 1rem 0;
+}
+
+.term-entry dt {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--rubric-red);
+}
+
+.term-entry dt em {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--prussian-blue);
+  font-weight: normal;
+  margin-left: 0.5rem;
+}
+
+.term-entry dd {
+  margin-top: 0.35rem;
+  color: var(--ink-muted);
+}
+
+/* Навигация между страницами */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line-dark);
+  padding-top: 1.5rem;
+  margin-top: 3rem;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: var(--ink-main);
+  font-size: 0.95rem;
+  border-bottom: 1px dotted var(--line-dark);
+}
+
+.pagination a:hover {
+  color: var(--rubric-red);
+  border-bottom-color: var(--rubric-red);
+}
+
+/* Подвал */
+.site-footer {
+  border-top: 2px solid var(--line-dark);
+  padding: 2rem 0;
+  background: var(--bg-parchment);
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.site-footer a {
+  color: var(--prussian-blue);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .hero-title {
+    font-size: 1.85rem;
+  }
+}
