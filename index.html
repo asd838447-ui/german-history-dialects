@@ -4,47 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Коренные народы Америки и открытие Нового Света</title>
-  <meta name="description" content="Интерактивная историческая веб-презентация по сценарию: ранняя история коренных народов, плавание Колумба 1492 года, закон о переселении 1830 г. и XXI век.">
+  <meta name="description" content="Интерактивная историческая веб-презентация: ранняя культура коренных народов, плавание Колумба 1492 года, переселение 1830 г. и XXI век.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.2">
 </head>
 <body>
 
   <!-- Верхняя навигационная панель (Header HUD) -->
   <header class="presentation-header">
     <div class="brand-section">
-      <span class="brand-symbol">🧭</span>
+      <svg class="brand-icon-svg" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+      </svg>
       <span class="brand-title">Коренные народы Америки &amp; 1492</span>
-      <span class="brand-act" id="act-indicator">Акт I • Доколумбова Америка</span>
+      <span class="brand-act" id="act-indicator">Акт I • Доколумбова эпоха</span>
     </div>
 
     <div class="header-controls">
       <div class="slide-counter">Слайд <span id="current-slide-num">1</span> / 10</div>
-      <button class="hud-btn" id="btn-thumbnails" title="Список всех слайдов">
-        <span>📑</span> Миниатюры
+      <button class="hud-btn" id="btn-thumbnails" title="Оглавление презентации (M)">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        <span>Слайды</span>
       </button>
-      <button class="hud-btn" id="btn-fullscreen" title="На весь экран (F)">
-        <span id="fs-icon">⛶</span> <span id="fs-text">Экран</span>
+      <button class="hud-btn" id="btn-fullscreen" title="Полноэкранный режим (F)">
+        <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        <span id="fs-text">Экран</span>
       </button>
     </div>
   </header>
 
-  <!-- Основное интерактивное полотно презентации -->
+  <!-- Основная сцена презентации -->
   <main class="presentation-viewport">
     <div class="presentation-stage" id="presentation-stage">
-      <div class="corner-ornament corner-tl"></div>
-      <div class="corner-ornament corner-tr"></div>
-      <div class="corner-ornament corner-bl"></div>
-      <div class="corner-ornament corner-br"></div>
+
+      <!-- Удобные боковые стрелки быстрого листания -->
+      <button class="stage-nav-arrow stage-nav-prev" id="stage-arrow-prev" title="Предыдущий слайд (←)">‹</button>
+      <button class="stage-nav-arrow stage-nav-next" id="stage-arrow-next" title="Следующий слайд (→)">›</button>
 
       <!-- ===================================================================
            АКТ I. ДОКОЛУМБОВА ЭПОХА И КУЛЬТУРА КОРЕННЫХ НАРОДОВ
            =================================================================== -->
 
-      <!-- Слайд 1: Расселение и древнейшие цивилизации (Берингия) -->
-      <section class="slide active" data-slide="1" data-act="Акт I • Доколумбова Америка">
+      <!-- Слайд 1: Расселение через Берингию -->
+      <section class="slide active" data-slide="1" data-act="Акт I • Доколумбова эпоха">
         <header class="slide-header">
           <div class="slide-act-tag">Акт I • Генезис и расселение</div>
           <h1 class="slide-title">Первые народы Америки: расселение и цивилизации</h1>
@@ -55,33 +59,33 @@
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🧊</span>
+                <span class="card-badge-num">01</span>
                 <h3 class="info-card-title">Берингов сухопутный мост (Берингия)</h3>
               </div>
               <p class="info-card-text">
-                Около 20 000 – 15 000 лет назад, в период Последнего ледникового максимума, уровень Мирового океана был ниже современного более чем на 100 метров. Племена древних палеоиндейцев перешли из Северо-Восточной Азии на Аляску посуху.
+                Около 20 000 – 15 000 лет назад, во время Последнего ледникового максимума, уровень Мирового океана опустился более чем на 100 метров. Племена палеоиндейцев перешли из Северо-Восточной Азии на Аляску по сухопутному перешейку.
               </p>
               <span class="info-card-meta">20 000 – 12 000 лет до н. э.</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🏹</span>
+                <span class="card-badge-num">02</span>
                 <h3 class="info-card-title">Освоение огромного континента</h3>
               </div>
               <p class="info-card-text">
-                Двигаясь вдоль тихоокеанского побережья и свободных ото льда коридоров Скалистых гор, первопроходцы за несколько тысячелетий заселили обе Америки — от арктической тундры до Огненной Земли на юге.
+                Двигаясь вдоль Тихоокеанского побережья и свободных ото льда коридоров Скалистых гор, первопроходцы за несколько тысячелетий заселили обе Америки — от арктической тундры до Огненной Земли на юге.
               </p>
               <span class="info-card-meta">Свыше 500 независимых племенных союзов</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🏛️</span>
+                <span class="card-badge-num">03</span>
                 <h3 class="info-card-title">Монументальные доколумбовы культуры</h3>
               </div>
               <p class="info-card-text">
-                Культура строителей курганов (курганы Миссисипи, мегаполис Кахокия с населением до 20 000 жителей) и скальные пуэбло Меса-Верде явили сложнейшую социальную и инженерную организацию задолго до европейцев.
+                Культура строителей курганов (город Кахокия с населением до 20 000 жителей) и скальные пуэбло Меса-Верде явили сложнейшую социальную и градостроительную организацию задолго до прибытия европейцев.
               </p>
               <span class="info-card-meta">Кахокия • Строители курганов • Пуэбло</span>
             </div>
@@ -100,33 +104,33 @@
       <!-- Слайд 2: Монолог коренного жителя (Кинематографический визуал) -->
       <section class="slide" data-slide="2" data-act="Акт I • Монолог Коренного Жителя">
         <header class="slide-header">
-          <div class="slide-act-tag">Акт I • Живое слово оратора</div>
+          <div class="slide-act-tag">Акт I • Живое слово со сцены</div>
           <h1 class="slide-title">Голос Земли: Монолог Коренного Жителя</h1>
           <p class="slide-subtitle">Поселение у подножия гор • Человек в гармонии с первозданной природой</p>
         </header>
 
         <div class="slide-content full-cinematic">
           <div class="cinematic-hero-box">
-            <img src="assets/img/indian_encampment.jpg" alt="Поселение индейцев на фоне первозданной природы — Альберт Бирштадт">
+            <img src="assets/img/indian_encampment.jpg" alt="Поселение индейцев — Альберт Бирштадт (1872)">
             <div class="cinematic-vignette"></div>
-            
+
             <div class="performer-badge">
               <span class="live-dot"></span>
-              <span><strong>Монолог актера:</strong> Повествование о земле, священных предках и духе ветра</span>
+              <span><strong>Слово актера:</strong> Повествование о земле, памяти предков и дыхании ветра</span>
             </div>
 
             <div class="visual-caption-badge">
               <span><strong>Альберт Бирштадт (1872):</strong> «Индейское поселение в Калифорнии»</span>
-              <span>Художественная атмосфера эпохи</span>
+              <span>Атмосфера гармонии с природой</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Слайд 3: Культура, быт, пиктограммы и уклад -->
-      <section class="slide" data-slide="3" data-act="Акт I • Культура и Духовный мир">
+      <!-- Слайд 3: Быт, культура и духовные традиции -->
+      <section class="slide" data-slide="3" data-act="Акт I • Культура и духовный мир">
         <header class="slide-header">
-          <div class="slide-act-tag">Акт I • Традиции и обычаи</div>
+          <div class="slide-act-tag">Акт I • Традиции и уклад</div>
           <h1 class="slide-title">Культура, быт и духовный мир коренных народов</h1>
           <p class="slide-subtitle">«Три сестры», пояса вампум, пиктографическое письмо и гармония мироздания</p>
         </header>
@@ -134,49 +138,57 @@
         <div class="slide-content split-2">
           <div class="pictogram-grid">
             <div class="picto-box">
-              <span class="icon">🌽</span>
-              <div class="label">«Три сестры»</div>
-              <p class="desc">Агрикультурный союз кукурузы, вьющихся бобов и тыквы — основа пропитания и плодородия почвы.</p>
+              <div class="picto-box-header">
+                <svg class="picto-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.3 0-1.1.9-2 2-2h2.4c3.1 0 5.6-2.5 5.6-5.6 0-5.4-4.8-9.8-11-9.8z"/></svg>
+                <div class="label">«Три сестры»</div>
+              </div>
+              <p class="desc">Агрикультурный союз кукурузы, бобов и тыквы: стебли служат опорой, корни обогащают почву азотом, а широкие листья сохраняют влагу.</p>
             </div>
 
             <div class="picto-box">
-              <span class="icon">🧵</span>
-              <div class="label">Пояса Вампум</div>
-              <p class="desc">Узорные ленты из священных морских раковин, служившие документами, договорами и летописью союзов.</p>
+              <div class="picto-box-header">
+                <svg class="picto-icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <div class="label">Пояса Вампум</div>
+              </div>
+              <p class="desc">Священные тканые пояса из полированных раковин, служившие юридическими договорами, хрониками и законами Конфедерации Ирокезов.</p>
             </div>
 
             <div class="picto-box">
-              <span class="icon">🏕️</span>
-              <div class="label">Типи и Вигвамы</div>
-              <p class="desc">Мобильные типи прерий из шкур бизона и каркасные длинные дома лесных племен Ирокезской лиги.</p>
+              <div class="picto-box-header">
+                <svg class="picto-icon-svg" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm0 3.5L17.5 11H6.5L12 6.5z"/></svg>
+                <div class="label">Типи и длинные дома</div>
+              </div>
+              <p class="desc">Легко переносимые конические типи кочевников прерий и монументальные коллективные длинные дома (longhouses) лесных племен востока.</p>
             </div>
 
             <div class="picto-box">
-              <span class="icon">🦅</span>
-              <div class="label">Тотем и Духи</div>
-              <p class="desc">Почитание Великого Духа (Вакан Танка / Маниту), тотемных хранителей природы и мудрости предков.</p>
+              <div class="picto-box-header">
+                <svg class="picto-icon-svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <div class="label">Тотем и духи предков</div>
+              </div>
+              <p class="desc">Глубокое благоговение перед Великим Духом (Вакан Танка / Маниту), духами животных и неразрывной связью поколений с родной землей.</p>
             </div>
           </div>
 
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🗣️</span>
-                <h3 class="info-card-title">Лингвистическая мозаика</h3>
+                <span class="card-badge-num">I</span>
+                <h3 class="info-card-title">Лингвистическая палитра континента</h3>
               </div>
               <p class="info-card-text">
-                К приходу европейцев в Северной Америке звучало свыше 300 самостоятельных языков, принадлежавших к десяткам неродственных семей: алгонкинской, ирокезской, сиуанской, атабаскской и юто-ацтекской.
+                К приходу европейцев звучало более 300 самостоятельных языков, представлявших десятки самостоятельных языковых семей: алгонкинские, сиуанские, ирокезские, атабаскские и пуэбло.
               </p>
-              <span class="info-card-meta">Языки жестов и пиктографии</span>
+              <span class="info-card-meta">Языки жестов прерий • Пиктография</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">⚖️</span>
+                <span class="card-badge-num">II</span>
                 <h3 class="info-card-title">Великий закон мира (Хауденосауни)</h3>
               </div>
               <p class="info-card-text">
-                Конфедерация Ирокезов создала одну из древнейших действующих представительских демократий в мире с разделением властей, Советом старейшин и правом вето матерей кланов.
+                Конфедерация Ирокезов создала одну из древнейших в мире систем представительской демократии с разделением властей, Советом старейшин и правом вето клановых матерей.
               </p>
               <span class="info-card-meta">Союз Пяти Наций • Ок. 1142–1451 гг.</span>
             </div>
@@ -188,61 +200,61 @@
            АКТ II. ЕВРОПА XV ВЕКА И ПЛАВАНИЕ ХРИСТОФОРА КОЛУМБА (1492)
            =================================================================== -->
 
-      <!-- Слайд 4: Европа XV века, наука, поиск путей в Индию -->
+      <!-- Слайд 4: Европа XV века, торговые пути и навигация -->
       <section class="slide" data-slide="4" data-act="Акт II • Европа накануне 1492">
         <header class="slide-header">
-          <div class="slide-act-tag">Акт II • Жажда пряностей и золота</div>
+          <div class="slide-act-tag">Акт II • Жажда пряностей и открытий</div>
           <h1 class="slide-title">Европа XV века: Поиск морского пути в Азию</h1>
-          <p class="slide-subtitle">Падение Константинополя (1453), ренессансная наука и мечта о западном маршруте</p>
+          <p class="slide-subtitle">Падение Константинополя (1453), ренессансная наука и идея плавания на запад</p>
         </header>
 
         <div class="slide-content split-2">
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">⚔️</span>
-                <h3 class="info-card-title">Блокада Великого шелкового пути</h3>
+                <span class="card-badge-num">01</span>
+                <h3 class="info-card-title">Блокада караванных путей</h3>
               </div>
               <p class="info-card-text">
-                После взятия Константинополя турками-османами в 1453 году традиционные торговые пути в Индию и Китай оказались закрыты гигантскими пошлинами. Европа остро нуждалась в пряностях, шелке и драгоценных металлах.
+                После взятия Константинополя османами в 1453 году традиционные торговые пути в Индию и Китай оказались перекрыты. Европа отчаянно искала прямой океанский маршрут к пряностям и шелку.
               </p>
               <span class="info-card-meta">1453 • Османская монополия</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🧭</span>
-                <h3 class="info-card-title">Навигационная революция</h3>
+                <span class="card-badge-num">02</span>
+                <h3 class="info-card-title">Технологический прорыв</h3>
               </div>
               <p class="info-card-text">
-                Появление быстроходных трехмачтовых каравелл с косыми латинскими парусами, позволившими лавировать против ветра, а также морской астролябии и магнитной стрелки компаса сделали океанские походы возможными.
+                Трехмачтовые каравеллы с косыми парусами позволили лавировать против ветра. А морская астролябия, портуланы и магнитный компас сделали возможной навигацию вдали от видимых берегов.
               </p>
-              <span class="info-card-meta">Каравеллы • Астролябия • Портуланы</span>
+              <span class="info-card-meta">Каравеллы • Астролябия • Картография</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">📜</span>
-                <h3 class="info-card-title">Идея Христофора Колумба</h3>
+                <span class="card-badge-num">03</span>
+                <h3 class="info-card-title">План Христофора Колумба</h3>
               </div>
               <p class="info-card-text">
-                Опираясь на расчеты флорентийца Паоло Тосканелли и недооценив длину экватора Земли, генуэзский мореплаватель Колумб убедил испанских монархов Изабеллу и Фердинанда профинансировать экспедицию на запад к берегам «Индий».
+                Опираясь на космографию Тосканелли и недооценив истинную длину земной окружности, генуэзец Колумб убедил испанских монархов Изабеллу и Фердинанда профинансировать поиск западного пути.
               </p>
-              <span class="info-card-meta">Санта-Фе • Договор с короной (1492)</span>
+              <span class="info-card-meta">Капитуляции Санта-Фе • 17 апреля 1492</span>
             </div>
           </div>
 
           <div class="visual-frame">
             <img src="assets/img/world_map_1490.jpg" alt="Карта мира Генриха Мартелла 1490 года">
             <div class="visual-caption-badge">
-              <span><strong>Карта Генриха Мартелла (1490):</strong> Представление европейцев о мире накануне отплытия Колумба</span>
-              <span>1490 г.</span>
+              <span><strong>Карта Генриха Мартелла (1490):</strong> Географические представления эпохи накануне отплытия</span>
+              <span>Флоренция, 1490 г.</span>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Слайд 5: Анимированный говорящий Колумб (Монолог перед командой) -->
+      <!-- Слайд 5: Реалистичный говорящий Колумб (Монолог перед бунтующей командой) -->
       <section class="slide" data-slide="5" data-act="Акт II • Монолог Колумба">
         <header class="slide-header">
           <div class="slide-act-tag">Акт II • Речь адмирала в океане</div>
@@ -255,47 +267,48 @@
             <div class="columbus-hud">
               <div>
                 <span class="columbus-hud-title">Христофор Колумб (1451–1506)</span>
-                <div style="font-size: 0.75rem; color: #d0c7b7;">Адмирал Моря-Океана • Борт «Санта-Марии»</div>
+                <span class="speech-wave" id="speech-wave-indicator" title="Индикатор живой речи"><span></span><span></span><span></span><span></span></span>
+                <div style="font-size: 0.74rem; color: #cfc7bc;">Адмирал Моря-Океана • Борт «Санта-Марии»</div>
               </div>
-              <button class="speech-toggle-btn" id="btn-columbus-toggle">Анимация речи: Вкл</button>
+              <button class="speech-toggle-btn" id="btn-columbus-toggle">Пауза речи</button>
             </div>
 
             <div class="columbus-animated-box is-talking" id="columbus-avatar">
               <img class="columbus-frame mouth-closed" src="assets/img/columbus_mouth_closed.jpg" alt="Христофор Колумб с закрытым ртом">
-              <img class="columbus-frame mouth-open" src="assets/img/columbus_mouth_open.jpg" alt="Христофор Колумб говорящий">
+              <img class="columbus-frame mouth-open" src="assets/img/columbus_mouth_open.jpg" alt="Христофор Колумб произносит речь">
             </div>
           </div>
 
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">⚡</span>
-                <h3 class="info-card-title">Ропот и угроза бунта</h3>
+                <span class="card-badge-num">01</span>
+                <h3 class="info-card-title">Угроза мятежа экипажа</h3>
               </div>
               <p class="info-card-text">
-                После 60 дней в открытом океане без признаков суши провизия начала портиться, а стрелка компаса отклонилась из-за магнитной деклинации. Моряки требовали повернуть корабли обратно в Палос.
+                После двух месяцев плавания в открытых водах без признаков земли припасы истощились, а стрелка компаса отклонилась из-за магнитной деклинации. Моряки потребовали повернуть эскадру назад.
               </p>
-              <span class="info-card-meta">На грани мятежа • 9–10 октября 1492</span>
+              <span class="info-card-meta">Кризис экспедиции • 9–10 октября 1492</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">📜</span>
-                <h3 class="info-card-title">Слово адмирала к матросам</h3>
+                <span class="card-badge-num">02</span>
+                <h3 class="info-card-title">Слово Колумба к матросам</h3>
               </div>
               <p class="info-card-text">
-                Колумб обращается к экипажу трех каравелл: он взывает к их чести, обещает королевскую награду за первый замеченный берег и просит дать ему еще всего три дня плавания.
+                Колумб собирает команду трех каравелл: он взывает к их чести и вере, обещает пожизненную пенсию от короны первому, кто увидит берег, и просит дать ему еще всего три дня плавания.
               </p>
-              <span class="info-card-meta">Живое озвучивание актером со сцены</span>
+              <span class="info-card-meta">Живое исполнение актером со сцены</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🕊️</span>
-                <h3 class="info-card-title">Первые предвестники земли</h3>
+                <span class="card-badge-num">03</span>
+                <h3 class="info-card-title">Первые вестники суши</h3>
               </div>
               <p class="info-card-text">
-                11 октября матросы каравеллы «Пинта» выловили в воде зеленую ветку тростника со свежими листьями и резную палочку. Земля была рядом.
+                11 октября матросы каравеллы «Пинта» выловили в воде зеленую ветку тростника с живыми листьями и резную палочку. Земля была в считанных милях.
               </p>
               <span class="info-card-meta">11 октября 1492 • Вечер</span>
             </div>
@@ -316,7 +329,7 @@
             <img src="assets/img/columbus_landing.jpg" alt="Высадка Колумба — картина Джона Вандерлина (Ротонда Капитолия)">
             <div class="visual-caption-badge">
               <span><strong>Джон Вандерлин (1847):</strong> «Высадка Христофора Колумба на острове Гуанахани»</span>
-              <span>Сан-Сальвадор</span>
+              <span>Ротонда Капитолия США</span>
             </div>
           </div>
 
@@ -324,16 +337,16 @@
             <div class="timeline-step">
               <div class="timeline-date">02:00 ночи</div>
               <div class="timeline-info">
-                <strong>Крик вахтенного</strong>
-                <p>Матрос Родриго де Триана с борта каравеллы «Пинта» первым замечает в лунном свете белеющую полосу песчаного берега.</p>
+                <strong>Крик вахтенного матроса</strong>
+                <p>Матрос Родриго де Триана с борта каравеллы «Пинта» первым замечает в лунном свете песчаный берег.</p>
               </div>
             </div>
 
             <div class="timeline-step">
               <div class="timeline-date">Утро 12 окт.</div>
               <div class="timeline-info">
-                <strong>Спуск шлюпок и присяга</strong>
-                <p>Колумб в алом камзоле адмирала с королевскими штандартами ступает на берег, падает на колени и нарекает остров Сан-Сальвадором.</p>
+                <strong>Высадка и присяга короне</strong>
+                <p>Колумб в алом камзоле адмирала водружает королевские штандарты Кастилии и Арагона и нарекает остров Сан-Сальвадором.</p>
               </div>
             </div>
 
@@ -341,7 +354,7 @@
               <div class="timeline-date">Полдень</div>
               <div class="timeline-info">
                 <strong>Первая встреча с народом таино</strong>
-                <p>Островитяне встречают пришельцев с дарами (попугаи, хлопковая пряжа, копья с рыбьими костями). Колумб ошибочно называет их «индейцами» (los Indios).</p>
+                <p>Островитяне встречают пришельцев дарами. Колумб ошибочно называет их «индейцами» (los Indios), веря, что достиг окраин Индии.</p>
               </div>
             </div>
           </div>
@@ -361,42 +374,42 @@
             <img src="assets/img/columbus_native_meeting.jpg" alt="Встреча Колумба с туземцами — гравюра Теодора де Бри 1594 г.">
             <div class="visual-caption-badge">
               <span><strong>Теодор де Бри (1594):</strong> «Прибытие европейцев в Новый Свет»</span>
-              <span>Гравюра эпохи</span>
+              <span>Франкфурт, 1594 г.</span>
             </div>
           </div>
 
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🏝️</span>
+                <span class="card-badge-num">01</span>
                 <h3 class="info-card-title">Взгляд коренных жителей (Таино)</h3>
               </div>
               <p class="info-card-text">
-                Люди в железных латах казались посланцами неба, прибывшими на гигантских плавучих домах с белыми парусами-крыльями. Островитяне не ведали железа и резались о лезвия европейских мечей.
+                Люди в железных латах казались посланцами неба на исполинских парусных лодках. Островитяне не знали железа и резались о лезвия европейских мечей.
               </p>
               <span class="info-card-meta">«Они кротки и не ведают зла...»</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">👑</span>
+                <span class="card-badge-num">02</span>
                 <h3 class="info-card-title">Взгляд испанских конкистадоров</h3>
               </div>
               <p class="info-card-text">
-                Испанцы искали золото, пряности и дворцы Великого Хана. За дружелюбием аборигенов европейцы увидели податливость и возможность обращения в христианскую веру и подданство Кастилии.
+                Испанцы искали золото, пряности и дворцы азиатских правителей. За дружелюбием аборигенов они увидели покорность и перспективу обращения в христианство.
               </p>
               <span class="info-card-meta">Запись в журнале Колумба • Октябрь 1492</span>
             </div>
 
-            <div class="info-card" style="border-left-color: var(--accent-gold);">
+            <div class="info-card" style="border-left-color: var(--accent-ochre);">
               <div class="info-card-header">
-                <span class="info-card-icon">🎭</span>
+                <span class="card-badge-num">03</span>
                 <h3 class="info-card-title">Сценический диалог актеров</h3>
               </div>
               <p class="info-card-text">
-                Звучит диалог-реконструкция между вождем острова и адмиралом Колумбом. Два мировоззрения, две несовместимые концепции владения землей и богатством.
+                Звучит диалог-реконструкция между вождем острова и адмиралом Колумбом: столкновение двух представлений о земле, свободе и ценности мира.
               </p>
-              <span class="info-card-meta">Живое исполнение двух актеров</span>
+              <span class="info-card-meta">Живое исполнение двух актеров со сцены</span>
             </div>
           </div>
         </div>
@@ -418,7 +431,7 @@
           <div class="visual-frame">
             <img src="assets/img/cherokee_removal_map.jpg" alt="Карта депортации индейцев и Дорога слез 1830-х годов">
             <div class="visual-caption-badge">
-              <span><strong>Историческая карта:</strong> Маршруты принудительной депортации племен на Индейскую территорию</span>
+              <span><strong>Служба национальных парков США:</strong> Маршруты Дороги слёз (Trail of Tears)</span>
               <span>1830–1839 гг.</span>
             </div>
           </div>
@@ -426,35 +439,35 @@
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">⚖️</span>
+                <span class="card-badge-num">01</span>
                 <h3 class="info-card-title">Indian Removal Act (1830)</h3>
               </div>
               <p class="info-card-text">
-                Закон, подписанный президентом США Эндрю Джексоном, предписывал принудительное изгнание племен чероки, крик, семинолов, чокто и чикасо с их плодородных исконных земель на юго-востоке в засушливую «Индейскую территорию» (ныне Оклахома).
+                Закон, подписанный президентом США Эндрю Джексоном, санкционировал принудительное изгнание племен чероки, криков, семинолов, чокто и чикасо с их исконных земель на засушливую территорию современной Оклахомы.
               </p>
               <span class="info-card-meta">Принят Конгрессом США • Май 1830 г.</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">❄️</span>
-                <h3 class="info-card-title">«Дорога слёз» (Nunna dual Isunyi)</h3>
+                <span class="card-badge-num">02</span>
+                <h3 class="info-card-title">«Дорога слёз» (Nunna daul Isunyi)</h3>
               </div>
               <p class="info-card-text">
-                Зимой 1838–1839 годов тысячи семей чероки под конвоем федеральной армии преодолели пешком более 1 600 километров. От стужи, голода, дизентерии и пневмонии погиб каждый четвертый — свыше 4 000 человек.
+                Зимой 1838–1839 годов тысячи семей чероки под конвоем армии прошли пешком более 1 600 км. От морозов, голода и тифа погибла четверть нации — свыше 4 000 человек.
               </p>
-              <span class="info-card-meta">Пеший исход • Смерть четверти нации</span>
+              <span class="info-card-meta">Пеший исход на Индейскую территорию</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">📉</span>
-                <h3 class="info-card-title">Демографический и территориальный удар</h3>
+                <span class="card-badge-num">03</span>
+                <h3 class="info-card-title">Утрата территорий и резервации</h3>
               </div>
               <p class="info-card-text">
-                Сочетание европейских эпидемий (оспа, корь), отчуждения земель и истребления стад бизонов на Великих равнинах привело к разрушению традиционного жизненного уклада большинства племен.
+                Отчуждение земель в пользу поселенцев и преднамеренное уничтожение многомиллионных стад бизонов на Великих равнинах подорвали вековой уклад коренных народов.
               </p>
-              <span class="info-card-meta">Утрата суверенитета и резервации</span>
+              <span class="info-card-meta">Резервационный период</span>
             </div>
           </div>
         </div>
@@ -470,12 +483,12 @@
 
         <div class="slide-content full-cinematic">
           <div class="cinematic-hero-box">
-            <img src="assets/img/sunset_on_the_plains.jpg" alt="Закат над прерией — Альберт Бирштадт">
+            <img src="assets/img/sunset_on_the_plains.jpg" alt="Закат над прерией — Альберт Бирштадт (1887)">
             <div class="cinematic-vignette"></div>
 
             <div class="performer-badge">
               <span class="live-dot"></span>
-              <span><strong>Монолог актера:</strong> Размышления о потерянной свободе прерий и несломленном духе</span>
+              <span><strong>Слово актера:</strong> Размышления о потерянной свободе прерий и несгибаемой памяти</span>
             </div>
 
             <div class="visual-caption-badge">
@@ -489,7 +502,7 @@
       <!-- Слайд 10: Индейцы в XXI веке: Возрождение и будущее -->
       <section class="slide" data-slide="10" data-act="Акт III • Индейцы в XXI веке">
         <header class="slide-header">
-          <div class="slide-act-tag">Акт III • Возрождение и триумф духа</div>
+          <div class="slide-act-tag">Акт III • Возрождение и будущее</div>
           <h1 class="slide-title">Коренные народы в XXI веке: Возрождение и будущее</h1>
           <p class="slide-subtitle">Суверенитет племенных наций, культурный ренессанс, фестивали Пау-вау и технологии</p>
         </header>
@@ -498,7 +511,7 @@
           <div class="visual-frame">
             <img src="assets/img/powwow_dancer.jpg" alt="Танцор в традиционном регалии на фестивале Пау-вау">
             <div class="visual-caption-badge">
-              <span><strong>Национальный фестиваль Пау-вау:</strong> Живая преемственность поколений и гордость предков</span>
+              <span><strong>Национальный фестиваль Пау-вау:</strong> Праздник единства наций и живая преемственность</span>
               <span>XXI век</span>
             </div>
           </div>
@@ -506,35 +519,35 @@
           <div class="info-cards-stack">
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🏛️</span>
+                <span class="card-badge-num">01</span>
                 <h3 class="info-card-title">574 признанные племенные нации</h3>
               </div>
               <p class="info-card-text">
-                В США официально признаны 574 племени, обладающие статусом суверенных наций («внутренне зависимые суверенные государства») с собственными конституциями, судебной системой, полицией и налогообложением.
+                В США официально признаны 574 племени со статусом суверенных наций, обладающих собственными конституциями, судебной властью, правоохранительными органами и институтами самоуправления.
               </p>
-              <span class="info-card-meta">Племенной суверенитет • Самоуправление</span>
+              <span class="info-card-meta">Племенной суверенитет и самоуправление</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">📱</span>
-                <h3 class="info-card-title">Языковой и образовательный ренессанс</h3>
+                <span class="card-badge-num">02</span>
+                <h3 class="info-card-title">Языковой и образовательный подъем</h3>
               </div>
               <p class="info-card-text">
-                Программы языкового погружения (навахо, чероки, оджибве, лакота), мобильные приложения, перевод интерфейсов ОС и перевод словарей в цифровой код спасают редчайшие языки мира от исчезновения.
+                Школы языкового погружения (навахо, чероки, дакота), мобильные словари и цифровые архивы возвращают молодому поколению древние языки предков.
               </p>
-              <span class="info-card-meta">Школы погружения • Цифровые архивы</span>
+              <span class="info-card-meta">Ревитализация устной традиции</span>
             </div>
 
             <div class="info-card">
               <div class="info-card-header">
-                <span class="info-card-icon">🪶</span>
+                <span class="card-badge-num">03</span>
                 <h3 class="info-card-title">Фестивали Пау-вау (Powwow)</h3>
               </div>
               <p class="info-card-text">
-                Многотысячные межплеменные празднества музыки, барабанов и танцев объединяют сотни наций. Это яркое свидетельство: культура коренных народов не музейный реликт, а живая, развивающаяся сила.
+                Межплеменные собрания традиционных танцев, песен и ремесел собирают сотни тысяч участников ежегодно. Коренные народы доказывают всему миру: «Мы всё еще здесь».
               </p>
-              <span class="info-card-meta">Мы всё еще здесь • We Are Still Here</span>
+              <span class="info-card-meta">Живая культура • Преемственность поколений</span>
             </div>
           </div>
         </div>
@@ -543,38 +556,38 @@
     </div>
   </main>
 
-  <!-- Нижняя навигационная панель (Footer HUD) -->
+  <!-- Нижняя навигационная панель (Footer HUD) с удобными кнопками -->
   <footer class="presentation-footer">
-    <button class="nav-arrow-btn" id="btn-prev" disabled>
-      <span>←</span> Назад
+    <button class="nav-arrow-btn" id="btn-prev" disabled title="Предыдущий слайд (←)">
+      <span>‹</span> Назад
     </button>
 
     <div class="progress-container">
-      <div class="progress-segments" id="progress-dots" title="Нажмите на сегмент для быстрого перехода">
-        <!-- 10 сегментов прогресса генерируются или инициализируются через JS -->
+      <div class="slide-pills-bar" id="slide-pills-bar" title="Нажмите на номер слайда для быстрого перехода">
+        <!-- 10 интерактивных кнопок-номеров слайдов (1..10) -->
       </div>
-      <div class="hotkey-hint">Клавиши: [←] Назад • [→] Вперед • [Пробел] Далее • [F] Полный экран • [Esc] Выход</div>
+      <div class="hotkey-hint">Клавиши: [←] Назад • [→] Вперед • [Пробел] Далее • [F] Полный экран • [M] Слайды</div>
     </div>
 
-    <button class="nav-arrow-btn" id="btn-next">
-      Вперед <span>→</span>
+    <button class="nav-arrow-btn" id="btn-next" title="Следующий слайд (→ или Пробел)">
+      Далее <span>›</span>
     </button>
   </footer>
 
-  <!-- Шторка миниатюр и оглавления всех слайдов (Thumbnail Drawer) -->
+  <!-- Шторка навигатора слайдов (Thumbnail Drawer) -->
   <div class="drawer-backdrop" id="drawer-backdrop">
     <aside class="thumbnail-drawer" id="thumbnail-drawer">
       <div class="drawer-header">
-        <h2 class="drawer-title">Навигатор по слайдам</h2>
-        <button class="drawer-close" id="btn-drawer-close" aria-label="Закрыть навигатор">✕</button>
+        <h2 class="drawer-title">Оглавление презентации</h2>
+        <button class="drawer-close" id="btn-drawer-close" aria-label="Закрыть">✕</button>
       </div>
 
       <div class="drawer-list" id="drawer-list">
-        <!-- Генерируется динамически через JS -->
+        <!-- Генерируется через JS -->
       </div>
     </aside>
   </div>
 
-  <script src="assets/js/main.js?v=4.0"></script>
+  <script src="assets/js/main.js?v=4.2"></script>
 </body>
 </html>

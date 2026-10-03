@@ -1,35 +1,39 @@
 /* ==========================================================================
    Коренные народы Америки и открытие Нового Света
-   Интерактивная веб-презентация в стиле старинного морского манускрипта
+   Интерактивная презентация • Спокойная естественная палитра, удобное управление
    ========================================================================== */
 
 @charset "UTF-8";
 
 :root {
-  --font-heading: "Cinzel", "Garamond", "Baskerville", "Georgia", serif;
+  --font-heading: "Cinzel", "Playfair Display", "Georgia", serif;
   --font-serif: "Georgia", "Palatino Linotype", "Book Antiqua", serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 
-  /* Палитра старинного манускрипта и морских карт */
-  --bg-parchment: #f6f1e7;
-  --bg-parchment-light: #fdfaf3;
-  --bg-parchment-deep: #ede4d1;
-  --bg-card: rgba(253, 250, 243, 0.94);
+  /* Натуральная, мягкая для глаз палитра (без резкого контраста) */
+  --bg-page: #f5f1e8;
+  --bg-page-soft: #faf7f0;
+  --bg-stage: #fdfbf7;
+  --bg-card: #ffffff;
+  --bg-card-alt: #f7f3ec;
 
-  --ink-primary: #241c17;
-  --ink-secondary: #53453b;
-  --ink-muted: #7d6e62;
+  --ink-primary: #2b2520;
+  --ink-secondary: #574f46;
+  --ink-muted: #7d7265;
 
-  --accent-terracotta: #9a3826;
-  --accent-gold: #b38234;
-  --accent-navy: #1b354d;
-  --accent-crimson: #7f1d1d;
+  /* Натуральные минеральные и архивные акценты */
+  --accent-terracotta: #9e4632;
+  --accent-ochre: #b08132;
+  --accent-navy: #243c53;
+  --accent-sage: #456151;
 
-  --border-ornate: #cbbca5;
-  --border-strong: #968369;
+  --border-subtle: #e3dcd1;
+  --border-medium: #cec3b2;
+  --border-strong: #9e907d;
 
-  --shadow-card: 0 8px 24px rgba(36, 28, 23, 0.12);
-  --shadow-elevated: 0 16px 40px rgba(36, 28, 23, 0.22);
+  --shadow-soft: 0 4px 18px rgba(43, 37, 32, 0.05);
+  --shadow-medium: 0 10px 30px rgba(43, 37, 32, 0.08);
+  --shadow-card: 0 2px 10px rgba(43, 37, 32, 0.04);
 }
 
 *, *::before, *::after {
@@ -42,37 +46,31 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   color: var(--ink-primary);
-  background-color: var(--bg-parchment);
-  user-select: none;
+  background-color: var(--bg-page);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Фактура античного пергамента */
+/* Мягкий фон без искусственного цифрового шума */
 body {
-  background-image:
-    radial-gradient(ellipse at 10% 15%, rgba(203, 188, 165, 0.4) 0%, transparent 65%),
-    radial-gradient(ellipse at 90% 85%, rgba(186, 167, 137, 0.45) 0%, transparent 65%),
-    radial-gradient(ellipse at 50% 50%, rgba(246, 241, 231, 0.85) 0%, rgba(237, 228, 209, 0.95) 100%),
-    url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='4' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23fff' surfaceScale='1'%3E%3CfeDistantLight azimuth='60' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='240' height='240' fill='%23f6f1e7'/%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.08'/%3E%3C/svg%3E");
-  background-size: auto, auto, auto, 240px 240px;
+  background-image: radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.6) 0%, transparent 75%);
   display: flex;
   flex-direction: column;
 }
 
 /* ==========================================================================
-   Верхний презентационный HUD (Header)
+   Верхний презентационный бар (Header HUD)
    ========================================================================== */
 .presentation-header {
-  height: 56px;
-  padding: 0 1.5rem;
+  height: 58px;
+  padding: 0 1.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--bg-card);
-  border-bottom: 2px solid var(--border-ornate);
-  box-shadow: 0 2px 8px rgba(36, 28, 23, 0.06);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 2px 8px rgba(43, 37, 32, 0.03);
   z-index: 100;
   flex-shrink: 0;
 }
@@ -80,37 +78,35 @@ body {
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-.brand-symbol {
-  font-size: 1.35rem;
-  color: var(--accent-gold);
-  line-height: 1;
+.brand-icon-svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--accent-terracotta);
+  flex-shrink: 0;
 }
 
 .brand-title {
   font-family: var(--font-heading);
   font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: var(--ink-primary);
-  text-transform: uppercase;
 }
 
 .brand-act {
-  display: inline-block;
-  padding: 0.15rem 0.65rem;
-  font-size: 0.75rem;
-  font-family: var(--font-sans);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.76rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent-terracotta);
-  background: rgba(154, 56, 38, 0.08);
-  border: 1px solid rgba(154, 56, 38, 0.25);
-  border-radius: 3px;
-  transition: all 0.3s ease;
+  letter-spacing: 0.05em;
+  color: var(--accent-navy);
+  background: rgba(36, 60, 83, 0.08);
+  border: 1px solid rgba(36, 60, 83, 0.18);
+  border-radius: 4px;
 }
 
 .header-controls {
@@ -124,7 +120,7 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--ink-secondary);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   padding: 0 0.5rem;
 }
 
@@ -137,13 +133,13 @@ body {
 .hud-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  height: 34px;
-  padding: 0 0.85rem;
-  background: var(--bg-parchment-light);
-  border: 1px solid var(--border-strong);
-  border-radius: 3px;
-  font-family: var(--font-serif);
+  gap: 0.45rem;
+  height: 36px;
+  padding: 0 0.95rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-medium);
+  border-radius: 5px;
+  font-family: var(--font-sans);
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--ink-primary);
@@ -152,13 +148,20 @@ body {
 }
 
 .hud-btn:hover {
-  background: var(--bg-parchment-deep);
-  border-color: var(--accent-gold);
+  background: #ffffff;
+  border-color: var(--accent-terracotta);
   color: var(--accent-terracotta);
+  box-shadow: 0 2px 6px rgba(43, 37, 32, 0.08);
+}
+
+.hud-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
 }
 
 /* ==========================================================================
-   Главная сцена презентации (16:9 Stage)
+   Главное полотно презентации (16:9 Stage)
    ========================================================================== */
 .presentation-viewport {
   flex: 1;
@@ -167,56 +170,81 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.75rem;
+  padding: 0.85rem 1.25rem;
 }
 
 .presentation-stage {
   position: relative;
   width: 100%;
-  max-width: 1440px;
+  max-width: 1420px;
   height: 100%;
-  max-height: 810px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-ornate);
-  box-shadow: var(--shadow-elevated);
-  border-radius: 4px;
+  max-height: 820px;
+  background: var(--bg-stage);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-medium);
+  border-radius: 8px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Изящная виньетка старинной карты */
-.presentation-stage::before {
-  content: "";
+/* Удобные боковые стрелки навигации на полотне */
+.stage-nav-arrow {
   position: absolute;
-  inset: 6px;
-  border: 1px solid rgba(186, 167, 137, 0.4);
-  pointer-events: none;
-  z-index: 20;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-medium);
+  color: var(--ink-primary);
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(43, 37, 32, 0.1);
+  opacity: 0.7;
 }
 
-.corner-ornament {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  border: 2px solid var(--border-strong);
-  pointer-events: none;
-  z-index: 25;
+.stage-nav-arrow:hover:not(:disabled) {
+  opacity: 1;
+  background: #ffffff;
+  border-color: var(--accent-terracotta);
+  color: var(--accent-terracotta);
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 6px 16px rgba(43, 37, 32, 0.16);
 }
-.corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
-.corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
-.corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
-.corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+.stage-nav-arrow:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.stage-nav-prev {
+  left: 1.25rem;
+}
+
+.stage-nav-next {
+  right: 1.25rem;
+}
 
 /* ==========================================================================
-   Слайды: логика анимации и компоновки
+   Слайды: логика анимации и переключения
    ========================================================================== */
 .slide {
   position: absolute;
   inset: 0;
-  padding: 2.25rem 3rem 1.75rem;
+  padding: 2.2rem 3.5rem 1.75rem;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.985);
-  transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
   display: flex;
   flex-direction: column;
   z-index: 1;
@@ -225,7 +253,7 @@ body {
 .slide.active {
   opacity: 1;
   visibility: visible;
-  transform: scale(1);
+  transform: translateY(0);
   z-index: 10;
 }
 
@@ -233,16 +261,14 @@ body {
 .slide-header {
   margin-bottom: 1.25rem;
   text-align: left;
-  position: relative;
-  z-index: 5;
+  flex-shrink: 0;
 }
 
 .slide-act-tag {
-  font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--accent-terracotta);
   margin-bottom: 0.25rem;
 }
@@ -253,80 +279,87 @@ body {
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--ink-primary);
-  line-height: 1.2;
+  line-height: 1.22;
 }
 
 .slide-subtitle {
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--ink-muted);
-  margin-top: 0.2rem;
+  font-size: 0.98rem;
+  color: var(--ink-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.4;
 }
 
-/* Контейнер содержимого слайда */
+/* Контейнеры содержимого слайда */
 .slide-content {
   flex: 1;
   display: grid;
-  gap: 1.5rem;
+  gap: 1.75rem;
   min-height: 0;
-  position: relative;
-  z-index: 5;
 }
 
-/* 2-колоночная сетка (Визуал + Инфографика) */
 .slide-content.split-2 {
   grid-template-columns: 1fr 1fr;
-  align-items: center;
+  align-items: stretch;
 }
 
 .slide-content.split-visual-large {
-  grid-template-columns: 1.15fr 0.85fr;
-  align-items: center;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: stretch;
 }
 
-/* Полноэкранный кинематографический визуал */
 .slide-content.full-cinematic {
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
 }
 
 /* ==========================================================================
-   Компоненты инфографики и пиктограмм
+   Инфо-карточки без искусственных эмодзи
    ========================================================================== */
 .info-cards-stack {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  justify-content: center;
 }
 
 .info-card {
-  background: var(--bg-parchment-light);
-  border: 1px solid var(--border-ornate);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
   border-left: 4px solid var(--accent-terracotta);
-  border-radius: 3px;
-  padding: 0.9rem 1.15rem;
-  box-shadow: 0 2px 8px rgba(36, 28, 23, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
 .info-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(36, 28, 23, 0.1);
-  border-left-color: var(--accent-gold);
+  box-shadow: 0 6px 16px rgba(43, 37, 32, 0.07);
+  border-left-color: var(--accent-ochre);
 }
 
 .info-card-header {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.75rem;
   margin-bottom: 0.35rem;
 }
 
-.info-card-icon {
-  font-size: 1.35rem;
-  line-height: 1;
+.card-badge-num {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-medium);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink-secondary);
+  font-family: var(--font-heading);
+  flex-shrink: 0;
 }
 
 .info-card-title {
@@ -344,16 +377,16 @@ body {
 
 .info-card-meta {
   display: inline-block;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent-terracotta);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.35rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent-navy);
+  letter-spacing: 0.03em;
+  margin-top: 0.4rem;
 }
 
-/* Сетка пиктограмм */
+/* ==========================================================================
+   Сетка элементов быта и культуры (Слайд 3)
+   ========================================================================== */
 .pictogram-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -361,52 +394,59 @@ body {
 }
 
 .picto-box {
-  background: var(--bg-parchment-light);
-  border: 1px solid var(--border-ornate);
-  border-radius: 3px;
-  padding: 0.85rem;
-  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
+  align-items: flex-start;
+  gap: 0.45rem;
+  box-shadow: var(--shadow-card);
   transition: all 0.2s ease;
 }
 
 .picto-box:hover {
-  background: var(--bg-parchment-deep);
-  border-color: var(--accent-gold);
+  border-color: var(--accent-ochre);
+  box-shadow: 0 4px 14px rgba(43, 37, 32, 0.07);
 }
 
-.picto-box .icon {
-  font-size: 2rem;
-  line-height: 1;
+.picto-box-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.picto-icon-svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--accent-terracotta);
 }
 
 .picto-box .label {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: var(--ink-primary);
 }
 
 .picto-box .desc {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   color: var(--ink-secondary);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
-   Иллюстрационные витрины и гравюры
+   Иллюстрационные витрины (Картины, карты, гравюры)
    ========================================================================== */
 .visual-frame {
   position: relative;
   width: 100%;
   height: 100%;
-  max-height: 520px;
-  background: #110e0c;
-  border: 2px solid var(--border-strong);
-  border-radius: 3px;
+  min-height: 380px;
+  background: #1a1715;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
   overflow: hidden;
   box-shadow: var(--shadow-card);
   display: flex;
@@ -421,44 +461,40 @@ body {
   display: block;
 }
 
-.visual-frame.contain-fit img {
-  object-fit: contain;
-  background: var(--bg-parchment-deep);
-}
-
 .visual-caption-badge {
   position: absolute;
-  bottom: 0.65rem;
-  left: 0.65rem;
-  right: 0.65rem;
-  background: rgba(27, 21, 17, 0.88);
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  background: rgba(28, 23, 19, 0.88);
   backdrop-filter: blur(4px);
-  color: #f7f3eb;
-  padding: 0.45rem 0.85rem;
+  color: #f7f4ee;
+  padding: 0.5rem 0.95rem;
   font-size: 0.82rem;
-  border-radius: 2px;
-  border: 1px solid rgba(203, 188, 165, 0.35);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .visual-caption-badge strong {
-  color: var(--accent-gold);
+  color: #f1cf88;
 }
 
 /* ==========================================================================
-   Слайд 5: Анимированный говорящий Колумб
+   Слайд 5: Реалистичный Колумб с естественным ритмом речи
    ========================================================================== */
 .columbus-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  border: 2px solid var(--border-strong);
-  border-radius: 3px;
+  min-height: 420px;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
   overflow: hidden;
-  box-shadow: var(--shadow-elevated);
-  background: #2b3947;
+  box-shadow: var(--shadow-medium);
+  background: #1e2936;
 }
 
 .columbus-animated-box {
@@ -474,7 +510,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.08s linear;
+  transition: opacity 0.1s ease-in-out;
 }
 
 .columbus-frame.mouth-open {
@@ -487,14 +523,30 @@ body {
   z-index: 1;
 }
 
-/* Активное говорение: мимика */
+/* Естественный ритм человеческой речи: фразы, слоги и дыхательные паузы */
 .is-talking .columbus-frame.mouth-open {
-  animation: columbusTalk 0.45s infinite ease-in-out alternate;
+  animation: columbusNaturalSpeech 3.2s infinite ease-in-out;
 }
 
-@keyframes columbusTalk {
-  0%, 30% { opacity: 0; }
-  50%, 100% { opacity: 1; }
+@keyframes columbusNaturalSpeech {
+  0% { opacity: 0; }
+  4% { opacity: 0.9; }
+  8% { opacity: 0.1; }
+  14% { opacity: 0.85; }
+  20% { opacity: 0.2; }
+  26% { opacity: 0.95; }
+  32% { opacity: 0; }
+  38% { opacity: 0.8; }
+  44% { opacity: 0.15; }
+  50% { opacity: 0; }
+  /* Пауза для вдоха оратора */
+  68% { opacity: 0; }
+  72% { opacity: 0.85; }
+  78% { opacity: 0.2; }
+  84% { opacity: 0.9; }
+  90% { opacity: 0.1; }
+  95% { opacity: 0.7; }
+  100% { opacity: 0; }
 }
 
 .columbus-hud {
@@ -502,71 +554,97 @@ body {
   top: 1rem;
   left: 1rem;
   z-index: 15;
-  background: rgba(27, 21, 17, 0.85);
-  border: 1px solid var(--border-strong);
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
+  background: rgba(28, 23, 19, 0.88);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 0.6rem 1.15rem;
   color: #fff;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 .columbus-hud-title {
   font-family: var(--font-heading);
   font-size: 0.95rem;
-  color: var(--accent-gold);
+  color: #f1cf88;
   font-weight: 700;
+}
+
+/* Индикатор звуковой волны живой речи */
+.speech-wave {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 16px;
+  margin-left: 0.5rem;
+}
+
+.speech-wave span {
+  display: inline-block;
+  width: 3px;
+  height: 6px;
+  background: #34d399;
+  border-radius: 1px;
+  transition: all 0.2s;
+}
+
+.is-talking .speech-wave span:nth-child(1) { animation: wave 0.8s infinite ease-in-out; }
+.is-talking .speech-wave span:nth-child(2) { animation: wave 0.8s infinite 0.2s ease-in-out; }
+.is-talking .speech-wave span:nth-child(3) { animation: wave 0.8s infinite 0.4s ease-in-out; }
+.is-talking .speech-wave span:nth-child(4) { animation: wave 0.8s infinite 0.1s ease-in-out; }
+
+@keyframes wave {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
 }
 
 .speech-toggle-btn {
   background: var(--accent-terracotta);
-  border: 1px solid var(--accent-gold);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
-  border-radius: 2px;
-  padding: 0.25rem 0.65rem;
-  font-size: 0.75rem;
-  font-family: var(--font-sans);
-  font-weight: 700;
-  text-transform: uppercase;
+  border-radius: 4px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   transition: all 0.2s ease;
 }
 
 .speech-toggle-btn:hover {
-  background: #b5402a;
+  background: #b54933;
 }
 
 /* ==========================================================================
-   Слайд 2 и 7: Кинематографические живые сцены для актеров
+   Слайды 2 и 9: Кинематографические живые сцены для ораторов
    ========================================================================== */
 .cinematic-hero-box {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 3px;
+  border-radius: 6px;
   overflow: hidden;
-  border: 2px solid var(--border-strong);
-  box-shadow: var(--shadow-elevated);
+  border: 1px solid var(--border-medium);
+  box-shadow: var(--shadow-medium);
 }
 
 .cinematic-hero-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.02);
-  transition: transform 12s ease-out;
+  transition: transform 10s ease-out;
 }
 
 .slide.active .cinematic-hero-box img {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .cinematic-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(20, 15, 12, 0.55) 100%);
+  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(24, 18, 14, 0.5) 100%);
   pointer-events: none;
 }
 
@@ -574,26 +652,27 @@ body {
   position: absolute;
   bottom: 1.25rem;
   right: 1.25rem;
-  background: rgba(36, 28, 23, 0.88);
-  border: 1px solid var(--border-strong);
-  color: #f7f3eb;
+  background: rgba(28, 23, 19, 0.88);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f7f4ee;
   padding: 0.65rem 1.25rem;
-  border-radius: 3px;
-  font-size: 0.9rem;
-  box-shadow: var(--shadow-card);
+  border-radius: 5px;
+  font-size: 0.88rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
 }
 
 .performer-badge .live-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: #34d399;
-  box-shadow: 0 0 8px #34d399;
-  animation: pulseLive 1.8s infinite;
+  box-shadow: 0 0 10px #34d399;
+  animation: pulseLive 2s infinite;
 }
 
 @keyframes pulseLive {
@@ -602,22 +681,24 @@ body {
 }
 
 /* ==========================================================================
-   Хронологические шкалы и таймлайны
+   Таймлайны и хронологические шаги
    ========================================================================== */
 .timeline-stepper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.85rem;
+  justify-content: center;
 }
 
 .timeline-step {
   display: flex;
   gap: 1rem;
   align-items: flex-start;
-  padding: 0.65rem 0.85rem;
-  background: var(--bg-parchment-light);
-  border: 1px solid var(--border-ornate);
-  border-radius: 3px;
+  padding: 0.85rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
 }
 
 .timeline-date {
@@ -632,29 +713,29 @@ body {
 .timeline-info strong {
   display: block;
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   color: var(--ink-primary);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.2rem;
 }
 
 .timeline-info p {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--ink-secondary);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
-   Нижний презентационный бар (Footer HUD)
+   Нижний презентационный бар (Footer HUD) • Удобные элементы
    ========================================================================== */
 .presentation-footer {
-  height: 64px;
-  padding: 0 1.5rem;
+  height: 66px;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--bg-card);
-  border-top: 2px solid var(--border-ornate);
-  box-shadow: 0 -2px 8px rgba(36, 28, 23, 0.06);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -2px 8px rgba(43, 37, 32, 0.03);
   z-index: 100;
   flex-shrink: 0;
 }
@@ -664,80 +745,101 @@ body {
   align-items: center;
   gap: 0.5rem;
   height: 42px;
-  padding: 0 1.25rem;
-  background: var(--bg-parchment-light);
-  border: 1px solid var(--border-strong);
-  border-radius: 3px;
+  padding: 0 1.35rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--ink-primary);
   cursor: pointer;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   transition: all 0.2s ease;
 }
 
 .nav-arrow-btn:hover:not(:disabled) {
-  background: var(--bg-parchment-deep);
-  border-color: var(--accent-gold);
+  background: #ffffff;
+  border-color: var(--accent-terracotta);
   color: var(--accent-terracotta);
   transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(43, 37, 32, 0.08);
 }
 
 .nav-arrow-btn:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: not-allowed;
 }
 
+/* Удобная интерактивная шкала номеров слайдов */
 .progress-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   flex: 1;
-  max-width: 480px;
+  max-width: 580px;
   margin: 0 1.5rem;
 }
 
-.progress-segments {
+.slide-pills-bar {
   display: flex;
   gap: 6px;
   width: 100%;
+  justify-content: center;
 }
 
-.progress-dot {
-  flex: 1;
-  height: 5px;
-  background: var(--border-ornate);
-  border-radius: 2px;
+.slide-pill {
+  width: 32px;
+  height: 26px;
+  border-radius: 4px;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-medium);
+  color: var(--ink-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.progress-dot.active {
+.slide-pill:hover {
+  background: #ffffff;
+  border-color: var(--accent-terracotta);
+  color: var(--accent-terracotta);
+}
+
+.slide-pill.active {
   background: var(--accent-terracotta);
-  transform: scaleY(1.4);
+  border-color: var(--accent-terracotta);
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 2px 6px rgba(158, 70, 50, 0.3);
 }
 
-.progress-dot.passed {
-  background: var(--accent-gold);
+.slide-pill.passed {
+  background: rgba(176, 129, 50, 0.15);
+  border-color: rgba(176, 129, 50, 0.4);
+  color: var(--accent-ochre);
 }
 
 .hotkey-hint {
-  font-size: 0.72rem;
-  font-family: var(--font-sans);
+  font-size: 0.74rem;
   color: var(--ink-muted);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 /* ==========================================================================
-   Шторка миниатюр слайдов (Thumbnail Drawer)
+   Шторка оглавления всех слайдов (Thumbnail Drawer)
    ========================================================================== */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 15, 12, 0.6);
-  backdrop-filter: blur(3px);
+  background: rgba(25, 20, 16, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -754,15 +856,15 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 380px;
+  width: 400px;
   max-width: 85vw;
-  background: var(--bg-parchment-light);
-  border-left: 2px solid var(--border-strong);
-  box-shadow: -8px 0 32px rgba(20, 15, 12, 0.25);
+  background: var(--bg-card);
+  border-left: 1px solid var(--border-medium);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .drawer-backdrop.open .thumbnail-drawer {
@@ -771,7 +873,7 @@ body {
 
 .drawer-header {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border-ornate);
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -787,9 +889,11 @@ body {
 .drawer-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
   color: var(--ink-muted);
+  padding: 0.2rem;
+  line-height: 1;
 }
 
 .drawer-close:hover {
@@ -799,7 +903,7 @@ body {
 .drawer-list {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -809,17 +913,17 @@ body {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  padding: 0.65rem 0.85rem;
-  background: var(--bg-parchment);
-  border: 1px solid var(--border-ornate);
-  border-radius: 3px;
+  padding: 0.75rem 1rem;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .drawer-item:hover, .drawer-item.active {
-  background: var(--bg-parchment-deep);
-  border-color: var(--accent-gold);
+  background: #ffffff;
+  border-color: var(--accent-terracotta);
 }
 
 .drawer-item.active {
@@ -842,7 +946,7 @@ body {
 }
 
 .drawer-item-text span {
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   color: var(--ink-muted);
 }
 
@@ -850,18 +954,19 @@ body {
    Адаптивность (проекторы, ноутбуки, мобильные)
    ========================================================================== */
 @media (max-width: 1024px) {
-  .slide { padding: 1.5rem 1.75rem 1.25rem; }
+  .slide { padding: 1.5rem 2rem 1.25rem; }
   .slide-title { font-size: 1.5rem; }
   .slide-content.split-2, .slide-content.split-visual-large { grid-template-columns: 1fr; }
-  .visual-frame { max-height: 320px; }
+  .visual-frame, .columbus-stage { min-height: 280px; }
+  .stage-nav-arrow { display: none; }
 }
 
 @media (max-width: 640px) {
   .brand-title { font-size: 0.85rem; }
-  .brand-act { display: none; }
-  .hotkey-hint { display: none; }
-  .presentation-stage::before, .corner-ornament { display: none; }
-  .slide { padding: 1rem 1.2rem; }
+  .brand-act, .hotkey-hint { display: none; }
+  .slide { padding: 1rem; }
   .slide-title { font-size: 1.25rem; }
   .pictogram-grid { grid-template-columns: 1fr; }
+  .presentation-footer { padding: 0 1rem; }
+  .slide-pill { width: 24px; height: 22px; font-size: 0.7rem; }
 }

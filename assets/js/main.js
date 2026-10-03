@@ -1,41 +1,49 @@
 /**
  * Коренные народы Америки и открытие Нового Света
- * Контроллер интерактивной веб-презентации
+ * Контроллер интерактивной презентации • Удобная навигация, естественная анимация речи
  */
 
 (function () {
   'use strict';
 
-  // DOM элементы
   var slides = Array.from(document.querySelectorAll('.slide'));
   var totalSlides = slides.length;
   var currentSlideIndex = 0;
 
   var currentSlideNumEl = document.getElementById('current-slide-num');
   var actIndicatorEl = document.getElementById('act-indicator');
+  
+  // Кнопки навигации (футер)
   var btnPrev = document.getElementById('btn-prev');
   var btnNext = document.getElementById('btn-next');
-  var progressContainer = document.getElementById('progress-dots');
+  
+  // Боковые стрелки быстрого листания на полотне
+  var stageArrowPrev = document.getElementById('stage-arrow-prev');
+  var stageArrowNext = document.getElementById('stage-arrow-next');
 
+  // Панель номеров слайдов
+  var slidePillsBar = document.getElementById('slide-pills-bar');
+
+  // Полноэкранный режим
   var btnFullscreen = document.getElementById('btn-fullscreen');
-  var fsIcon = document.getElementById('fs-icon');
   var fsText = document.getElementById('fs-text');
 
+  // Шторка оглавления
   var btnThumbnails = document.getElementById('btn-thumbnails');
   var drawerBackdrop = document.getElementById('drawer-backdrop');
   var drawerClose = document.getElementById('btn-drawer-close');
   var drawerList = document.getElementById('drawer-list');
 
+  // Модуль Колумба (Слайд 5)
   var btnColumbusToggle = document.getElementById('btn-columbus-toggle');
   var columbusAvatar = document.getElementById('columbus-avatar');
+  var speechWaveIndicator = document.getElementById('speech-wave-indicator');
 
-  // Инициализация
   function init() {
-    buildProgressDots();
+    buildSlidePills();
     buildDrawerList();
     bindEvents();
 
-    // Проверяем hash в URL (#slide-3 -> слайд 3)
     var initialSlide = parseHash();
     goToSlide(initialSlide, false);
   }
@@ -51,27 +59,32 @@
     return 0;
   }
 
-  // Создание сегментов прогресса
-  function buildProgressDots() {
-    if (!progressContainer) return;
-    progressContainer.innerHTML = '';
+  // Создание удобных интерактивных кнопок-номеров 1..10
+  function buildSlidePills() {
+    if (!slidePillsBar) return;
+    slidePillsBar.innerHTML = '';
+
     for (var i = 0; i < totalSlides; i++) {
-      var dot = document.createElement('div');
-      dot.className = 'progress-dot';
-      dot.setAttribute('data-index', i);
-      dot.title = 'Слайд ' + (i + 1) + ': ' + getSlideTitle(i);
-      dot.addEventListener('click', function (e) {
+      var pill = document.createElement('button');
+      pill.className = 'slide-pill';
+      pill.textContent = (i + 1);
+      pill.setAttribute('data-index', i);
+      pill.title = 'Слайд ' + (i + 1) + ': ' + getSlideTitle(i);
+
+      pill.addEventListener('click', function () {
         var idx = parseInt(this.getAttribute('data-index'), 10);
         goToSlide(idx);
       });
-      progressContainer.appendChild(dot);
+
+      slidePillsBar.appendChild(pill);
     }
   }
 
-  // Создание списка миниатюр в шторке навигатора
+  // Создание списка слайдов в выдвижной шторке
   function buildDrawerList() {
     if (!drawerList) return;
     drawerList.innerHTML = '';
+
     slides.forEach(function (slide, idx) {
       var title = getSlideTitle(idx);
       var act = slide.getAttribute('data-act') || ('Слайд ' + (idx + 1));
@@ -103,7 +116,7 @@
     return titleEl ? titleEl.textContent.trim() : 'Слайд ' + (idx + 1);
   }
 
-  // Переход на слайд
+  // Основная функция переключения слайдов
   function goToSlide(targetIndex, updateHash) {
     if (updateHash === undefined) updateHash = true;
     if (targetIndex < 0) targetIndex = 0;
@@ -111,7 +124,7 @@
 
     currentSlideIndex = targetIndex;
 
-    // Переключение классов слайдов
+    // Смена активного слайда
     slides.forEach(function (slide, idx) {
       if (idx === currentSlideIndex) {
         slide.classList.add('active');
@@ -120,7 +133,7 @@
       }
     });
 
-    // Обновление HUD
+    // Обновление счетчика и акта
     if (currentSlideNumEl) {
       currentSlideNumEl.textContent = currentSlideIndex + 1;
     }
@@ -133,22 +146,27 @@
       }
     }
 
-    // Состояние кнопок Назад / Вперед
-    if (btnPrev) btnPrev.disabled = (currentSlideIndex === 0);
-    if (btnNext) btnNext.disabled = (currentSlideIndex === totalSlides - 1);
+    // Состояние стрелок навигации
+    var isFirst = (currentSlideIndex === 0);
+    var isLast = (currentSlideIndex === totalSlides - 1);
 
-    // Обновление прогресс-бара
-    var dots = progressContainer ? progressContainer.querySelectorAll('.progress-dot') : [];
-    dots.forEach(function (dot, idx) {
-      dot.classList.remove('active', 'passed');
+    if (btnPrev) btnPrev.disabled = isFirst;
+    if (btnNext) btnNext.disabled = isLast;
+    if (stageArrowPrev) stageArrowPrev.disabled = isFirst;
+    if (stageArrowNext) stageArrowNext.disabled = isLast;
+
+    // Обновление кнопок-номеров (Pills)
+    var pills = slidePillsBar ? slidePillsBar.querySelectorAll('.slide-pill') : [];
+    pills.forEach(function (pill, idx) {
+      pill.classList.remove('active', 'passed');
       if (idx < currentSlideIndex) {
-        dot.classList.add('passed');
+        pill.classList.add('passed');
       } else if (idx === currentSlideIndex) {
-        dot.classList.add('active');
+        pill.classList.add('active');
       }
     });
 
-    // Обновление активного элемента в шторке
+    // Обновление активного элемента шторки
     var drawerItems = drawerList ? drawerList.querySelectorAll('.drawer-item') : [];
     drawerItems.forEach(function (item, idx) {
       if (idx === currentSlideIndex) {
@@ -158,15 +176,14 @@
       }
     });
 
-    // Специфика слайда 5 (Колумб)
-    if (currentSlideIndex === 4) { // Слайд 5 (0-indexed 4)
+    // Обработка слайда 5 (Колумб)
+    if (currentSlideIndex === 4) { // Слайд 5 (индекс 4)
       if (columbusAvatar && !columbusAvatar.classList.contains('is-talking')) {
         columbusAvatar.classList.add('is-talking');
-        if (btnColumbusToggle) btnColumbusToggle.textContent = 'Анимация речи: Вкл';
+        if (btnColumbusToggle) btnColumbusToggle.textContent = 'Пауза речи';
       }
     }
 
-    // Хеш в URL для удобства ссылок и возврата
     if (updateHash) {
       history.replaceState(null, '', '#slide-' + (currentSlideIndex + 1));
     }
@@ -184,17 +201,13 @@
     }
   }
 
-  // Управление шторкой навигации
+  // Управление шторкой оглавления
   function openDrawer() {
-    if (drawerBackdrop) {
-      drawerBackdrop.classList.add('open');
-    }
+    if (drawerBackdrop) drawerBackdrop.classList.add('open');
   }
 
   function closeDrawer() {
-    if (drawerBackdrop) {
-      drawerBackdrop.classList.remove('open');
-    }
+    if (drawerBackdrop) drawerBackdrop.classList.remove('open');
   }
 
   function toggleDrawer() {
@@ -205,11 +218,11 @@
     }
   }
 
-  // Управление полноэкранным режимом
+  // Полноэкранный режим
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(function (err) {
-        console.warn('Не удалось войти в полноэкранный режим:', err);
+        console.warn('Не удалось перейти в полноэкранный режим:', err);
       });
     } else {
       if (document.exitFullscreen) {
@@ -220,45 +233,46 @@
 
   function updateFullscreenUI() {
     var isFs = !!document.fullscreenElement;
-    if (fsIcon) fsIcon.textContent = isFs ? '🗗' : '⛶';
     if (fsText) fsText.textContent = isFs ? 'Окно' : 'Экран';
   }
 
-  // Управление анимацией говорящего Колумба
+  // Управление анимацией речи Колумба
   function toggleColumbusSpeech() {
     if (!columbusAvatar) return;
     var isTalking = columbusAvatar.classList.toggle('is-talking');
     if (btnColumbusToggle) {
-      btnColumbusToggle.textContent = isTalking ? 'Анимация речи: Вкл' : 'Анимация речи: Пауза';
+      btnColumbusToggle.textContent = isTalking ? 'Пауза речи' : 'Воспроизведение речи';
     }
   }
 
-  // Привязка событий
+  // Привязка слушателей событий
   function bindEvents() {
+    // Навигация по кнопкам
     if (btnPrev) btnPrev.addEventListener('click', prevSlide);
     if (btnNext) btnNext.addEventListener('click', nextSlide);
+    if (stageArrowPrev) stageArrowPrev.addEventListener('click', prevSlide);
+    if (stageArrowNext) stageArrowNext.addEventListener('click', nextSlide);
 
+    // Полноэкранный режим
     if (btnFullscreen) btnFullscreen.addEventListener('click', toggleFullscreen);
     document.addEventListener('fullscreenchange', updateFullscreenUI);
 
+    // Шторка
     if (btnThumbnails) btnThumbnails.addEventListener('click', toggleDrawer);
     if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-
     if (drawerBackdrop) {
       drawerBackdrop.addEventListener('click', function (e) {
-        if (e.target === drawerBackdrop) {
-          closeDrawer();
-        }
+        if (e.target === drawerBackdrop) closeDrawer();
       });
     }
 
+    // Речь Колумба
     if (btnColumbusToggle) {
       btnColumbusToggle.addEventListener('click', toggleColumbusSpeech);
     }
 
-    // Клавиатурные шорткаты
+    // Клавиатура
     document.addEventListener('keydown', function (e) {
-      // Игнорируем ввод, если фокус в инпуте или текстарее
       var tag = e.target.tagName.toLowerCase();
       if (tag === 'input' || tag === 'textarea') return;
 
@@ -266,7 +280,7 @@
         case 'ArrowRight':
         case 'ArrowDown':
         case 'PageDown':
-        case ' ': // Space
+        case ' ': // Пробел
           e.preventDefault();
           nextSlide();
           break;
@@ -291,7 +305,7 @@
         case 'f':
         case 'F':
         case 'а':
-        case 'А': // Русская раскладка для клавиши F
+        case 'А':
           toggleFullscreen();
           break;
 
@@ -308,7 +322,7 @@
       }
     });
 
-    // Тач / Свайп на мобильных устройствах
+    // Свайп на смартфонах и планшетах
     var touchStartX = 0;
     var touchStartY = 0;
 
@@ -325,8 +339,7 @@
       var diffX = touchEndX - touchStartX;
       var diffY = touchEndY - touchStartY;
 
-      // Горизонтальный свайп с порогом 50px
-      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
         if (diffX < 0) {
           nextSlide();
         } else {
@@ -335,7 +348,7 @@
       }
     }, { passive: true });
 
-    // Реакция на изменение hash в URL
+    // Hash navigation
     window.addEventListener('hashchange', function () {
       var slideNum = parseHash();
       if (slideNum !== currentSlideIndex) {
@@ -344,7 +357,6 @@
     });
   }
 
-  // Запуск при загрузке документа
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
