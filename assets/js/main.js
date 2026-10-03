@@ -1,415 +1,290 @@
 /**
- * Коренные народы Америки и открытие Нового Света
- * Контроллер презентации • Академический просмотр, увеличение карт (Lightbox), плавная навигация
+ * Коренные народы Америки и Новый Свет — управление презентацией
+ * Навигация, оглавление, полный экран, просмотр иллюстраций с увеличением
  */
-
 (function () {
   'use strict';
 
-  var slides = Array.from(document.querySelectorAll('.slide'));
-  var totalSlides = slides.length;
-  var currentSlideIndex = 0;
+  var $ = function (id) { return document.getElementById(id); };
 
-  var currentSlideNumEl = document.getElementById('current-slide-num');
-  var actIndicatorEl = document.getElementById('act-indicator');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
 
-  // Навигационные кнопки (футер)
-  var btnPrev = document.getElementById('btn-prev');
-  var btnNext = document.getElementById('btn-next');
+  var els = {
+    num: $('current-slide-num'),
+    act: $('act-indicator'),
+    prev: $('btn-prev'),
+    next: $('btn-next'),
+    arrowPrev: $('stage-arrow-prev'),
+    arrowNext: $('stage-arrow-next'),
+    pills: $('slide-pills-bar'),
+    fsBtn: $('btn-fullscreen'),
+    fsText: $('fs-text'),
+    tocBtn: $('btn-thumbnails'),
+    drawer: $('drawer-backdrop'),
+    drawerClose: $('btn-drawer-close'),
+    drawerList: $('drawer-list'),
+    talkBtn: $('btn-columbus-toggle'),
+    avatar: $('columbus-avatar'),
+    modal: $('image-modal'),
+    canvas: $('modal-canvas'),
+    modalImg: $('modal-img'),
+    modalCaption: $('modal-caption')
+  };
 
-  // Быстрые боковые стрелки на полотне
-  var stageArrowPrev = document.getElementById('stage-arrow-prev');
-  var stageArrowNext = document.getElementById('stage-arrow-next');
+  function titleOf(i) {
+    var t = slides[i].querySelector('.slide-title');
+    return t ? t.textContent.trim() : 'Слайд ' + (i + 1);
+  }
+  function actOf(i) { return slides[i].getAttribute('data-act') || ''; }
 
-  // Лента кнопок-номеров 1..10
-  var slidePillsBar = document.getElementById('slide-pills-bar');
-
-  // Полноэкранный режим
-  var btnFullscreen = document.getElementById('btn-fullscreen');
-  var fsText = document.getElementById('fs-text');
-
-  // Шторка оглавления
-  var btnThumbnails = document.getElementById('btn-thumbnails');
-  var drawerBackdrop = document.getElementById('drawer-backdrop');
-  var drawerClose = document.getElementById('btn-drawer-close');
-  var drawerList = document.getElementById('drawer-list');
-
-  // Модуль Колумба
-  var btnColumbusToggle = document.getElementById('btn-columbus-toggle');
-  var columbusAvatar = document.getElementById('columbus-avatar');
-
-  // Модальное окно детального просмотра карт (Lightbox)
-  var imageModal = document.getElementById('image-modal');
-  var modalImg = document.getElementById('modal-img');
-  var modalCaption = document.getElementById('modal-caption');
-  var modalCloseBtn = document.getElementById('modal-close-btn');
-
-  function init() {
-    buildSlidePills();
-    buildDrawerList();
-    bindEvents();
-    bindZoomableImages();
-
-    var initialSlide = parseHash();
-    goToSlide(initialSlide, false);
+  /* ---------- Номера слайдов и оглавление ---------- */
+  function buildPills() {
+    for (var i = 0; i < total; i++) {
+      var b = document.createElement('button');
+      b.className = 'slide-pill';
+      b.textContent = i + 1;
+      b.title = (i + 1) + '. ' + titleOf(i);
+      if (i > 0 && actOf(i) !== actOf(i - 1)) b.classList.add('act-start');
+      b.addEventListener('click', go.bind(null, i));
+      els.pills.appendChild(b);
+    }
   }
 
-  function parseHash() {
-    var match = window.location.hash.match(/slide-(\d+)/);
-    if (match) {
-      var num = parseInt(match[1], 10);
-      if (num >= 1 && num <= totalSlides) {
-        return num - 1;
+  function buildDrawer() {
+    var lastAct = null;
+    slides.forEach(function (_, i) {
+      if (actOf(i) !== lastAct) {
+        lastAct = actOf(i);
+        var h = document.createElement('div');
+        h.className = 'drawer-act';
+        h.textContent = lastAct;
+        els.drawerList.appendChild(h);
       }
-    }
-    return 0;
-  }
-
-  // Генерация кнопок-номеров
-  function buildSlidePills() {
-    if (!slidePillsBar) return;
-    slidePillsBar.innerHTML = '';
-
-    for (var i = 0; i < totalSlides; i++) {
-      var pill = document.createElement('button');
-      pill.className = 'slide-pill';
-      pill.textContent = (i + 1);
-      pill.setAttribute('data-index', i);
-      pill.title = 'Слайд ' + (i + 1) + ': ' + getSlideTitle(i);
-
-      pill.addEventListener('click', function () {
-        var idx = parseInt(this.getAttribute('data-index'), 10);
-        goToSlide(idx);
-      });
-
-      slidePillsBar.appendChild(pill);
-    }
-  }
-
-  // Генерация оглавления в выдвижной шторке
-  function buildDrawerList() {
-    if (!drawerList) return;
-    drawerList.innerHTML = '';
-
-    slides.forEach(function (slide, idx) {
-      var title = getSlideTitle(idx);
-      var act = slide.getAttribute('data-act') || ('Слайд ' + (idx + 1));
-
       var item = document.createElement('div');
       item.className = 'drawer-item';
-      item.setAttribute('data-index', idx);
-
-      item.innerHTML =
-        '<div class="drawer-item-num">' + (idx + 1) + '</div>' +
-        '<div class="drawer-item-text">' +
-          '<strong>' + title + '</strong>' +
-          '<span>' + act + '</span>' +
-        '</div>';
-
-      item.addEventListener('click', function () {
-        goToSlide(idx);
-        closeDrawer();
-      });
-
-      drawerList.appendChild(item);
+      item.innerHTML = '<span class="drawer-item-num">' + (i + 1) + '</span><span class="drawer-item-text"></span>';
+      item.querySelector('.drawer-item-text').textContent = titleOf(i);
+      item.addEventListener('click', function () { go(i); closeDrawer(); });
+      els.drawerList.appendChild(item);
     });
   }
 
-  function getSlideTitle(idx) {
-    var slide = slides[idx];
-    if (!slide) return '';
-    var titleEl = slide.querySelector('.slide-title');
-    return titleEl ? titleEl.textContent.trim() : 'Слайд ' + (idx + 1);
-  }
+  /* ---------- Переход ---------- */
+  function go(i, keepHash) {
+    i = Math.max(0, Math.min(total - 1, i));
+    current = i;
 
-  // Переход к слайду
-  function goToSlide(targetIndex, updateHash) {
-    if (updateHash === undefined) updateHash = true;
-    if (targetIndex < 0) targetIndex = 0;
-    if (targetIndex >= totalSlides) targetIndex = totalSlides - 1;
-
-    currentSlideIndex = targetIndex;
-
-    slides.forEach(function (slide, idx) {
-      if (idx === currentSlideIndex) {
-        slide.classList.add('active');
-        slide.scrollTop = 0; // Сбрасываем скролл на начало слайда
-      } else {
-        slide.classList.remove('active');
-      }
+    slides.forEach(function (s, k) {
+      var on = k === i;
+      s.classList.toggle('active', on);
+      if (on) s.scrollTop = 0;
     });
 
-    if (currentSlideNumEl) {
-      currentSlideNumEl.textContent = currentSlideIndex + 1;
-    }
+    els.num.textContent = i + 1;
+    els.act.textContent = actOf(i);
 
-    var activeSlide = slides[currentSlideIndex];
-    if (activeSlide && actIndicatorEl) {
-      var actText = activeSlide.getAttribute('data-act');
-      if (actText) {
-        actIndicatorEl.textContent = actText;
-      }
-    }
+    var first = i === 0, last = i === total - 1;
+    els.prev.disabled = els.arrowPrev.disabled = first;
+    els.next.disabled = els.arrowNext.disabled = last;
 
-    // Состояние стрелок
-    var isFirst = (currentSlideIndex === 0);
-    var isLast = (currentSlideIndex === totalSlides - 1);
-
-    if (btnPrev) btnPrev.disabled = isFirst;
-    if (btnNext) btnNext.disabled = isLast;
-    if (stageArrowPrev) stageArrowPrev.disabled = isFirst;
-    if (stageArrowNext) stageArrowNext.disabled = isLast;
-
-    // Обновление полосы номеров
-    var pills = slidePillsBar ? slidePillsBar.querySelectorAll('.slide-pill') : [];
-    pills.forEach(function (pill, idx) {
-      pill.classList.remove('active', 'passed');
-      if (idx < currentSlideIndex) {
-        pill.classList.add('passed');
-      } else if (idx === currentSlideIndex) {
-        pill.classList.add('active');
-      }
+    Array.prototype.forEach.call(els.pills.children, function (p, k) {
+      p.classList.toggle('active', k === i);
+      p.classList.toggle('passed', k < i);
+    });
+    Array.prototype.forEach.call(els.drawerList.querySelectorAll('.drawer-item'), function (d, k) {
+      d.classList.toggle('active', k === i);
     });
 
-    // Обновление активного элемента шторки
-    var drawerItems = drawerList ? drawerList.querySelectorAll('.drawer-item') : [];
-    drawerItems.forEach(function (item, idx) {
-      if (idx === currentSlideIndex) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
-      }
-    });
+    // Колумб «говорит» каждый раз, когда открывается его слайд
+    if (els.avatar && slides[i].contains(els.avatar)) setTalking(true);
 
-    // Обработка речи Колумба на слайде 5
-    if (currentSlideIndex === 4) {
-      if (columbusAvatar && !columbusAvatar.classList.contains('is-talking')) {
-        columbusAvatar.classList.add('is-talking');
-        if (btnColumbusToggle) btnColumbusToggle.textContent = 'Пауза речи';
-      }
-    }
-
-    if (updateHash) {
-      history.replaceState(null, '', '#slide-' + (currentSlideIndex + 1));
-    }
+    if (!keepHash) history.replaceState(null, '', '#slide-' + (i + 1));
   }
 
-  function nextSlide() {
-    if (currentSlideIndex < totalSlides - 1) {
-      goToSlide(currentSlideIndex + 1);
-    }
+  function next() { if (current < total - 1) go(current + 1); }
+  function prev() { if (current > 0) go(current - 1); }
+
+  function hashIndex() {
+    var m = location.hash.match(/slide-(\d+)/);
+    var n = m ? parseInt(m[1], 10) : 1;
+    return (n >= 1 && n <= total) ? n - 1 : 0;
   }
 
-  function prevSlide() {
-    if (currentSlideIndex > 0) {
-      goToSlide(currentSlideIndex - 1);
-    }
-  }
+  /* ---------- Оглавление ---------- */
+  function openDrawer() { els.drawer.classList.add('open'); }
+  function closeDrawer() { els.drawer.classList.remove('open'); }
+  function toggleDrawer() { els.drawer.classList.toggle('open'); }
 
-  // Управление модальным окном карт (Lightbox)
-  function openImageModal(src, caption) {
-    if (!imageModal || !modalImg) return;
-    modalImg.src = src;
-    if (modalCaption) {
-      modalCaption.textContent = caption || '';
-    }
-    imageModal.classList.add('open');
-  }
-
-  function closeImageModal() {
-    if (imageModal) {
-      imageModal.classList.remove('open');
-      if (modalImg) modalImg.src = '';
-    }
-  }
-
-  function bindZoomableImages() {
-    var zoomables = document.querySelectorAll('[data-zoom-src]');
-    zoomables.forEach(function (el) {
-      el.addEventListener('click', function (e) {
-        // Если клик был не по кнопке внутри карточки
-        if (e.target.tagName.toLowerCase() === 'button') return;
-        var src = el.getAttribute('data-zoom-src');
-        var caption = el.getAttribute('data-zoom-caption');
-        if (src) {
-          openImageModal(src, caption);
-        }
-      });
-    });
-
-    if (modalCloseBtn) {
-      modalCloseBtn.addEventListener('click', closeImageModal);
-    }
-
-    if (imageModal) {
-      imageModal.addEventListener('click', function (e) {
-        if (e.target === imageModal) {
-          closeImageModal();
-        }
-      });
-    }
-  }
-
-  // Шторка оглавления
-  function openDrawer() {
-    if (drawerBackdrop) drawerBackdrop.classList.add('open');
-  }
-
-  function closeDrawer() {
-    if (drawerBackdrop) drawerBackdrop.classList.remove('open');
-  }
-
-  function toggleDrawer() {
-    if (drawerBackdrop && drawerBackdrop.classList.contains('open')) {
-      closeDrawer();
-    } else {
-      openDrawer();
-    }
-  }
-
-  // Полноэкранный режим
+  /* ---------- Полный экран ---------- */
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(function (err) {
-        console.warn('Полноэкранный режим недоступен:', err);
-      });
+      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(function () {});
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
+      document.exitFullscreen && document.exitFullscreen();
     }
   }
-
-  function updateFullscreenUI() {
-    var isFs = !!document.fullscreenElement;
-    if (fsText) fsText.textContent = isFs ? 'Окно' : 'Экран';
+  function onFullscreen() {
+    els.fsText.textContent = document.fullscreenElement ? 'Выйти' : 'На весь экран';
   }
 
-  // Управление речью Колумба
-  function toggleColumbusSpeech() {
-    if (!columbusAvatar) return;
-    var isTalking = columbusAvatar.classList.toggle('is-talking');
-    if (btnColumbusToggle) {
-      btnColumbusToggle.textContent = isTalking ? 'Пауза речи' : 'Воспроизведение речи';
-    }
+  /* ---------- Колумб ---------- */
+  function setTalking(on) {
+    if (!els.avatar) return;
+    els.avatar.classList.toggle('is-talking', on);
+    if (els.talkBtn) els.talkBtn.textContent = on ? 'Остановить' : 'Говорить';
   }
 
-  // Обработчики событий
-  function bindEvents() {
-    if (btnPrev) btnPrev.addEventListener('click', prevSlide);
-    if (btnNext) btnNext.addEventListener('click', nextSlide);
-    if (stageArrowPrev) stageArrowPrev.addEventListener('click', prevSlide);
-    if (stageArrowNext) stageArrowNext.addEventListener('click', nextSlide);
+  /* ---------- Просмотр иллюстраций: увеличение и перетаскивание ---------- */
+  var view = { scale: 1, x: 0, y: 0 };
+  var drag = null;
 
-    if (btnFullscreen) btnFullscreen.addEventListener('click', toggleFullscreen);
-    document.addEventListener('fullscreenchange', updateFullscreenUI);
+  function applyView() {
+    els.modalImg.style.transform =
+      'translate(calc(-50% + ' + view.x + 'px), calc(-50% + ' + view.y + 'px)) scale(' + view.scale + ')';
+  }
 
-    if (btnThumbnails) btnThumbnails.addEventListener('click', toggleDrawer);
-    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
-    if (drawerBackdrop) {
-      drawerBackdrop.addEventListener('click', function (e) {
-        if (e.target === drawerBackdrop) closeDrawer();
+  function resetView() { view.scale = 1; view.x = 0; view.y = 0; applyView(); }
+
+  function zoomAt(factor, cx, cy) {
+    var r = els.canvas.getBoundingClientRect();
+    // точка под курсором относительно центра холста
+    var px = (cx === undefined ? r.width / 2 : cx - r.left) - r.width / 2;
+    var py = (cy === undefined ? r.height / 2 : cy - r.top) - r.height / 2;
+    var ns = Math.max(1, Math.min(8, view.scale * factor));
+    var k = ns / view.scale;
+    view.x = px - (px - view.x) * k;
+    view.y = py - (py - view.y) * k;
+    view.scale = ns;
+    if (ns === 1) { view.x = 0; view.y = 0; }
+    applyView();
+  }
+
+  function openModal(src, caption) {
+    els.modalImg.src = src;
+    els.modalImg.alt = caption || '';
+    els.modalCaption.textContent = caption || '';
+    resetView();
+    els.modal.classList.add('open');
+  }
+  function closeModal() {
+    els.modal.classList.remove('open');
+    els.modalImg.src = '';
+  }
+  function modalOpen() { return els.modal.classList.contains('open'); }
+
+  function bindModal() {
+    document.querySelectorAll('[data-zoom-src]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        openModal(el.getAttribute('data-zoom-src'), el.getAttribute('data-zoom-caption'));
       });
-    }
-
-    if (btnColumbusToggle) {
-      btnColumbusToggle.addEventListener('click', toggleColumbusSpeech);
-    }
-
-    // Клавиатура
-    document.addEventListener('keydown', function (e) {
-      var tag = e.target.tagName.toLowerCase();
-      if (tag === 'input' || tag === 'textarea') return;
-
-      // Если открыто модальное окно просмотра карты, Esc закрывает его
-      if (e.key === 'Escape') {
-        if (imageModal && imageModal.classList.contains('open')) {
-          closeImageModal();
-          return;
-        }
-        closeDrawer();
-        return;
-      }
-
-      switch (e.key) {
-        case 'ArrowRight':
-        case 'ArrowDown':
-        case 'PageDown':
-        case ' ': // Пробел
-          e.preventDefault();
-          nextSlide();
-          break;
-
-        case 'ArrowLeft':
-        case 'ArrowUp':
-        case 'PageUp':
-          e.preventDefault();
-          prevSlide();
-          break;
-
-        case 'Home':
-          e.preventDefault();
-          goToSlide(0);
-          break;
-
-        case 'End':
-          e.preventDefault();
-          goToSlide(totalSlides - 1);
-          break;
-
-        case 'f':
-        case 'F':
-        case 'а':
-        case 'А':
-          toggleFullscreen();
-          break;
-
-        case 'm':
-        case 'M':
-        case 'ь':
-        case 'Ь':
-          toggleDrawer();
-          break;
-      }
     });
 
-    // Свайп
-    var touchStartX = 0;
-    var touchStartY = 0;
+    $('modal-close-btn').addEventListener('click', closeModal);
+    $('zoom-in').addEventListener('click', function () { zoomAt(1.4); });
+    $('zoom-out').addEventListener('click', function () { zoomAt(1 / 1.4); });
+    $('zoom-reset').addEventListener('click', resetView);
 
-    document.addEventListener('touchstart', function (e) {
-      if (!e.changedTouches || e.changedTouches.length === 0) return;
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
+    els.canvas.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      zoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+    }, { passive: false });
 
-    document.addEventListener('touchend', function (e) {
-      if (!e.changedTouches || e.changedTouches.length === 0) return;
-      var touchEndX = e.changedTouches[0].screenX;
-      var touchEndY = e.changedTouches[0].screenY;
-      var diffX = touchEndX - touchStartX;
-      var diffY = touchEndY - touchStartY;
+    els.canvas.addEventListener('dblclick', function (e) {
+      if (view.scale > 1.01) resetView(); else zoomAt(2.5, e.clientX, e.clientY);
+    });
 
-      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-        if (diffX < 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
+    els.canvas.addEventListener('pointerdown', function (e) {
+      drag = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y, moved: false };
+      els.canvas.setPointerCapture(e.pointerId);
+      els.canvas.classList.add('dragging');
+    });
+    els.canvas.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
+      view.x = drag.vx + dx;
+      view.y = drag.vy + dy;
+      applyView();
+    });
+    function endDrag(e) {
+      if (!drag) return;
+      // клик по пустому полю (без перетаскивания и без увеличения) — закрыть
+      if (!drag.moved && e.target === els.canvas && view.scale === 1) closeModal();
+      drag = null;
+      els.canvas.classList.remove('dragging');
+    }
+    els.canvas.addEventListener('pointerup', endDrag);
+    els.canvas.addEventListener('pointercancel', endDrag);
+  }
+
+  /* ---------- События ---------- */
+  function bind() {
+    els.prev.addEventListener('click', prev);
+    els.next.addEventListener('click', next);
+    els.arrowPrev.addEventListener('click', prev);
+    els.arrowNext.addEventListener('click', next);
+
+    els.fsBtn.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', onFullscreen);
+
+    els.tocBtn.addEventListener('click', toggleDrawer);
+    els.drawerClose.addEventListener('click', closeDrawer);
+    els.drawer.addEventListener('click', function (e) { if (e.target === els.drawer) closeDrawer(); });
+
+    if (els.talkBtn) els.talkBtn.addEventListener('click', function () {
+      setTalking(!els.avatar.classList.contains('is-talking'));
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (/input|textarea/i.test(e.target.tagName)) return;
+      var k = e.key;
+
+      if (modalOpen()) {
+        if (k === 'Escape') closeModal();
+        else if (k === '+' || k === '=') zoomAt(1.4);
+        else if (k === '-' || k === '_') zoomAt(1 / 1.4);
+        else if (k === '0') resetView();
+        return; // в режиме просмотра слайды не листаются
       }
+
+      if (k === 'Escape') { closeDrawer(); return; }
+
+      // ↑ ↓ оставлены для прокрутки слайда, если он не помещается
+      if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }
+      else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
+      else if (k === 'Home') { e.preventDefault(); go(0); }
+      else if (k === 'End') { e.preventDefault(); go(total - 1); }
+      else if (/^[fFаА]$/.test(k)) toggleFullscreen();
+      else if (/^[mMьЬ]$/.test(k)) toggleDrawer();
+    });
+
+    // Свайпы на телефоне/планшете
+    var sx = 0, sy = 0;
+    document.addEventListener('touchstart', function (e) {
+      sx = e.changedTouches[0].screenX; sy = e.changedTouches[0].screenY;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (modalOpen()) return;
+      var dx = e.changedTouches[0].screenX - sx, dy = e.changedTouches[0].screenY - sy;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) { dx < 0 ? next() : prev(); }
     }, { passive: true });
 
     window.addEventListener('hashchange', function () {
-      var slideNum = parseHash();
-      if (slideNum !== currentSlideIndex) {
-        goToSlide(slideNum, false);
-      }
+      var i = hashIndex();
+      if (i !== current) go(i, true);
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  function init() {
+    buildPills();
+    buildDrawer();
+    bindModal();
+    bind();
+    go(hashIndex(), true);
   }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();

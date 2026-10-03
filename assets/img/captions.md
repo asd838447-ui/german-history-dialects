@@ -66,7 +66,7 @@
 ---
 
 ### 8. Карта принудительного переселения («Дорога слёз») (Слайд 8)
-- **Файл**: `cherokee_removal_map.jpg`
+- **Файл**: `trail_of_tears_map.jpg`
 - **Источник**: [Wikimedia Commons: Trails of Tears en.png](https://commons.wikimedia.org/wiki/File:Trails_of_Tears_en.png) / Служба национальных парков США (NPS).
 - **Описание**: Маршруты депортации Пяти цивилизованных племен на Индейскую территорию во исполнение Indian Removal Act 1830 г.
 - **Лицензия**: Общественное достояние (Public Domain, US National Park Service).
