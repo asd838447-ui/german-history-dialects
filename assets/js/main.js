@@ -174,6 +174,23 @@
   }
   function modalOpen() { return els.modal.classList.contains('open'); }
 
+  function togglePicture() {
+    if (modalOpen()) {
+      closeModal();
+      return;
+    }
+    var s = slides[current];
+    if (!s) return;
+    if (s.contains(els.avatar)) {
+      setTalking(!els.avatar.classList.contains('is-talking'));
+      return;
+    }
+    var z = s.querySelector('[data-zoom-src]');
+    if (z) {
+      openModal(z.getAttribute('data-zoom-src'), z.getAttribute('data-zoom-caption'));
+    }
+  }
+
   function bindModal() {
     document.querySelectorAll('[data-zoom-src]').forEach(function (el) {
       el.addEventListener('click', function () {
@@ -240,13 +257,23 @@
     document.addEventListener('keydown', function (e) {
       if (/input|textarea/i.test(e.target.tagName)) return;
       var k = e.key;
+      var isShiftNine = e.shiftKey && (e.code === 'Digit9' || e.code === 'Numpad9' || k === '9' || k === '(');
 
       if (modalOpen()) {
-        if (k === 'Escape') closeModal();
+        if (k === 'Escape' || isShiftNine) {
+          e.preventDefault();
+          closeModal();
+        }
         else if (k === '+' || k === '=') zoomAt(1.4);
         else if (k === '-' || k === '_') zoomAt(1 / 1.4);
         else if (k === '0') resetView();
         return; // в режиме просмотра слайды не листаются
+      }
+
+      if (isShiftNine) {
+        e.preventDefault();
+        togglePicture();
+        return;
       }
 
       if (k === 'Escape') { closeDrawer(); return; }
