@@ -5,11 +5,12 @@
 
 ---
 
-### 1. Анимация миграции через Берингию (Слайд 1)
-- **Файл**: `beringia_land_bridge.gif`
-- **Источник**: [NOAA Climate.gov / Wikimedia Commons: Beringia land bridge.gif](https://commons.wikimedia.org/wiki/File:Beringia_land_bridge.gif)
-- **Описание**: Научная картографическая палеогеографическая анимация снижения уровня моря и образования сухопутного моста между Чукоткой и Аляской во время ледникового максимума (21 000 – 10 000 лет назад).
-- **Лицензия**: Общественное достояние (Public Domain, произведение федерального агентства США NOAA).
+### 1. Карта коренных наций Северной Америки (Слайд 1)
+- **Файл**: `indigenous_nations_map.jpg`
+- **Источник**: [Wikimedia Commons: Indigenous American Nations, 16th century - 2024 edition.jpg](https://commons.wikimedia.org/wiki/File:Indigenous_American_Nations,_16th_century_-_2024_edition.jpg) (автор: Peter Klompenhouwer).
+- **Описание**: Высокодетализированная историческая карта расселения более чем 400 коренных наций и союзов Северной Америки к началу XVI века с племенными автонимами, границами языковых ареалов и культурными зонами.
+- **Лицензия**: Creative Commons CC0 1.0 Universal / Public Domain Dedication.
+
 
 ---
 

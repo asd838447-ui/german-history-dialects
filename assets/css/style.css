@@ -1,39 +1,42 @@
 /* ==========================================================================
    Коренные народы Америки и открытие Нового Света
-   Интерактивная презентация • Спокойная естественная палитра, удобное управление
+   Историко-документальная интерактивная монография
+   Авторский академический стиль • Комфортная палитра • Адаптивная верстка
    ========================================================================== */
 
 @charset "UTF-8";
 
 :root {
-  --font-heading: "Cinzel", "Playfair Display", "Georgia", serif;
-  --font-serif: "Georgia", "Palatino Linotype", "Book Antiqua", serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  /* Гарнитуры академической и музейной типографики */
+  --font-title: "Cinzel", "Times New Roman", serif;
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-body: "Cormorant Garamond", "Georgia", "Palatino", serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* Натуральная, мягкая для глаз палитра (без резкого контраста) */
-  --bg-page: #f5f1e8;
-  --bg-page-soft: #faf7f0;
-  --bg-stage: #fdfbf7;
+  /* Натуральная, мягкая палитра матовой книги и теплого льна */
+  --bg-page: #f3efe6;
+  --bg-stage: #fbf9f4;
   --bg-card: #ffffff;
-  --bg-card-alt: #f7f3ec;
+  --bg-card-tint: #f6f2e9;
+  --bg-cartouche: rgba(251, 249, 244, 0.96);
 
-  --ink-primary: #2b2520;
-  --ink-secondary: #574f46;
-  --ink-muted: #7d7265;
+  --ink-primary: #26201b;
+  --ink-secondary: #4a4138;
+  --ink-muted: #73675a;
 
-  /* Натуральные минеральные и архивные акценты */
-  --accent-terracotta: #9e4632;
-  --accent-ochre: #b08132;
-  --accent-navy: #243c53;
-  --accent-sage: #456151;
+  /* Благородные минеральные тона */
+  --accent-crimson: #8f3424;
+  --accent-amber: #a8792c;
+  --accent-navy: #1d364d;
+  --accent-moss: #3a5745;
 
-  --border-subtle: #e3dcd1;
-  --border-medium: #cec3b2;
-  --border-strong: #9e907d;
+  --border-fine: #e5ded2;
+  --border-rule: #d4c8b6;
+  --border-bold: #9c8e79;
 
-  --shadow-soft: 0 4px 18px rgba(43, 37, 32, 0.05);
-  --shadow-medium: 0 10px 30px rgba(43, 37, 32, 0.08);
-  --shadow-card: 0 2px 10px rgba(43, 37, 32, 0.04);
+  --shadow-subtle: 0 3px 12px rgba(38, 32, 27, 0.05);
+  --shadow-stage: 0 12px 36px rgba(38, 32, 27, 0.1);
+  --shadow-hover: 0 6px 20px rgba(38, 32, 27, 0.08);
 }
 
 *, *::before, *::after {
@@ -46,15 +49,15 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: var(--font-sans);
+  font-family: var(--font-body);
   color: var(--ink-primary);
   background-color: var(--bg-page);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Мягкий фон без искусственного цифрового шума */
+/* Фон: мягкий градиент естественного дневного света */
 body {
-  background-image: radial-gradient(circle at 50% 8%, rgba(255, 255, 255, 0.6) 0%, transparent 75%);
+  background-image: radial-gradient(ellipse at 50% 0%, #ffffff 0%, #f3efe6 80%);
   display: flex;
   flex-direction: column;
 }
@@ -63,14 +66,14 @@ body {
    Верхний презентационный бар (Header HUD)
    ========================================================================== */
 .presentation-header {
-  height: 58px;
-  padding: 0 1.75rem;
+  height: 56px;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border-subtle);
-  box-shadow: 0 2px 8px rgba(43, 37, 32, 0.03);
+  background: var(--bg-stage);
+  border-bottom: 1px solid var(--border-rule);
+  box-shadow: 0 1px 6px rgba(38, 32, 27, 0.04);
   z-index: 100;
   flex-shrink: 0;
 }
@@ -78,35 +81,37 @@ body {
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
-.brand-icon-svg {
-  width: 22px;
-  height: 22px;
-  fill: var(--accent-terracotta);
-  flex-shrink: 0;
+.brand-monogram {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-crimson);
+  letter-spacing: 0.05em;
 }
 
 .brand-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--ink-primary);
 }
 
-.brand-act {
+.brand-act-pill {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.65rem;
-  font-size: 0.76rem;
+  padding: 0.15rem 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.74rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: var(--accent-navy);
-  background: rgba(36, 60, 83, 0.08);
-  border: 1px solid rgba(36, 60, 83, 0.18);
-  border-radius: 4px;
+  background: rgba(29, 54, 77, 0.06);
+  border: 1px solid rgba(29, 54, 77, 0.2);
+  border-radius: 3px;
 }
 
 .header-controls {
@@ -116,31 +121,30 @@ body {
 }
 
 .slide-counter {
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-family: var(--font-title);
+  font-size: 0.92rem;
   color: var(--ink-secondary);
   letter-spacing: 0.04em;
   padding: 0 0.5rem;
 }
 
 .slide-counter span {
-  color: var(--accent-terracotta);
+  color: var(--accent-crimson);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
 }
 
 .hud-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  height: 36px;
-  padding: 0 0.95rem;
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border-medium);
-  border-radius: 5px;
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
+  height: 34px;
+  padding: 0 0.85rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-rule);
+  border-radius: 4px;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--ink-primary);
   cursor: pointer;
@@ -149,19 +153,19 @@ body {
 
 .hud-btn:hover {
   background: #ffffff;
-  border-color: var(--accent-terracotta);
-  color: var(--accent-terracotta);
-  box-shadow: 0 2px 6px rgba(43, 37, 32, 0.08);
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
+  box-shadow: 0 2px 8px rgba(38, 32, 27, 0.08);
 }
 
 .hud-btn svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
   fill: currentColor;
 }
 
 /* ==========================================================================
-   Главное полотно презентации (16:9 Stage)
+   Главное полотно (Stage Viewport)
    ========================================================================== */
 .presentation-viewport {
   flex: 1;
@@ -170,84 +174,104 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.85rem 1.25rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 0; /* Критично для flex-контейнеров */
 }
 
 .presentation-stage {
   position: relative;
   width: 100%;
-  max-width: 1420px;
+  max-width: 1440px;
   height: 100%;
-  max-height: 820px;
+  max-height: 860px;
   background: var(--bg-stage);
-  border: 1px solid var(--border-medium);
-  box-shadow: var(--shadow-medium);
-  border-radius: 8px;
+  border: 1px solid var(--border-bold);
+  box-shadow: var(--shadow-stage);
+  border-radius: 6px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* Удобные боковые стрелки навигации на полотне */
+/* Рамочный контур книжного листа */
+.presentation-stage::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(156, 142, 121, 0.35);
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Удобные боковые стрелки быстрого листания */
 .stage-nav-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--border-medium);
+  background: rgba(251, 249, 244, 0.88);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--border-rule);
   color: var(--ink-primary);
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   z-index: 50;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(43, 37, 32, 0.1);
-  opacity: 0.7;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(38, 32, 27, 0.1);
+  opacity: 0.65;
 }
 
 .stage-nav-arrow:hover:not(:disabled) {
   opacity: 1;
   background: #ffffff;
-  border-color: var(--accent-terracotta);
-  color: var(--accent-terracotta);
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
   transform: translateY(-50%) scale(1.08);
-  box-shadow: 0 6px 16px rgba(43, 37, 32, 0.16);
 }
 
 .stage-nav-arrow:disabled {
-  opacity: 0.2;
+  opacity: 0.15;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-.stage-nav-prev {
-  left: 1.25rem;
-}
-
-.stage-nav-next {
-  right: 1.25rem;
-}
+.stage-nav-prev { left: 1rem; }
+.stage-nav-next { right: 1rem; }
 
 /* ==========================================================================
-   Слайды: логика анимации и переключения
+   Слайды: Архитектура верстки и предотвращение обрезания текста
    ========================================================================== */
 .slide {
   position: absolute;
   inset: 0;
-  padding: 2.2rem 3.5rem 1.75rem;
+  padding: 1.75rem 3.25rem 1.25rem;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
   z-index: 1;
+
+  /* КРИТИЧЕСКИ ВАЖНО: плавный внутренний скролл, если экран мал */
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-rule) transparent;
+}
+
+.slide::-webkit-scrollbar {
+  width: 5px;
+}
+.slide::-webkit-scrollbar-thumb {
+  background: var(--border-rule);
+  border-radius: 3px;
 }
 
 .slide.active {
@@ -257,36 +281,59 @@ body {
   z-index: 10;
 }
 
-/* Заголовки слайда */
+/* Заголовочный блок слайда в академическом стиле */
 .slide-header {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.2rem;
   text-align: left;
   flex-shrink: 0;
+  position: relative;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border-fine);
 }
 
 .slide-act-tag {
-  font-size: 0.78rem;
+  font-family: var(--font-title);
+  font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent-terracotta);
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.14em;
+  color: var(--accent-crimson);
+  margin-bottom: 0.2rem;
 }
 
 .slide-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: 1.85rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: var(--ink-primary);
-  line-height: 1.22;
+  line-height: 1.2;
 }
 
 .slide-subtitle {
-  font-size: 0.98rem;
+  font-family: var(--font-body);
+  font-size: 1.12rem;
+  font-style: italic;
   color: var(--ink-secondary);
-  margin-top: 0.25rem;
-  line-height: 1.4;
+  margin-top: 0.2rem;
+  line-height: 1.35;
+}
+
+/* Разделительный орнамент */
+.ornament-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--accent-amber);
+  font-size: 0.75rem;
+  margin: 0.5rem 0;
+}
+.ornament-rule::before, .ornament-rule::after {
+  content: "";
+  height: 1px;
+  background: var(--border-rule);
+  flex: 1;
 }
 
 /* Контейнеры содержимого слайда */
@@ -303,7 +350,7 @@ body {
 }
 
 .slide-content.split-visual-large {
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.25fr 0.85fr;
   align-items: stretch;
 }
 
@@ -311,147 +358,174 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 380px;
 }
 
 /* ==========================================================================
-   Инфо-карточки без искусственных эмодзи
+   Академическая нарративная хроника (вместо шаблонных карточек ИИ)
    ========================================================================== */
-.info-cards-stack {
+.narrative-column {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  justify-content: center;
+  gap: 1rem;
+  justify-content: flex-start;
 }
 
-.info-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-left: 4px solid var(--accent-terracotta);
-  border-radius: 6px;
-  padding: 1rem 1.25rem;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-}
-
-.info-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(43, 37, 32, 0.07);
-  border-left-color: var(--accent-ochre);
-}
-
-.info-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.35rem;
-}
-
-.card-badge-num {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border-medium);
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--ink-secondary);
-  font-family: var(--font-heading);
-  flex-shrink: 0;
-}
-
-.info-card-title {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 700;
+.lead-paragraph {
+  font-size: 1.15rem;
+  line-height: 1.55;
   color: var(--ink-primary);
 }
 
-.info-card-text {
-  font-size: 0.92rem;
-  line-height: 1.5;
+.lead-paragraph .drop-cap {
+  float: left;
+  font-family: var(--font-title);
+  font-size: 3.1rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  color: var(--accent-crimson);
+  font-weight: 700;
+}
+
+.chronicle-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.chronicle-entry {
+  padding: 0.85rem 1.1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-left: 3px solid var(--accent-crimson);
+  border-radius: 4px;
+  box-shadow: var(--shadow-subtle);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.chronicle-entry:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
+  border-left-color: var(--accent-amber);
+}
+
+.chronicle-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.25rem;
+}
+
+.chronicle-num-roman {
+  font-family: var(--font-title);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-crimson);
+  letter-spacing: 0.08em;
+}
+
+.chronicle-entry-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  flex: 1;
+  margin-left: 0.5rem;
+}
+
+.chronicle-entry-date {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+}
+
+.chronicle-entry-body {
+  font-size: 1.02rem;
+  line-height: 1.45;
   color: var(--ink-secondary);
 }
 
-.info-card-meta {
-  display: inline-block;
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--accent-navy);
-  letter-spacing: 0.03em;
-  margin-top: 0.4rem;
-}
-
 /* ==========================================================================
-   Сетка элементов быта и культуры (Слайд 3)
+   Культурные артефакты и уклад (Слайд 3)
    ========================================================================== */
-.pictogram-grid {
+.cultural-quad-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.85rem;
 }
 
-.picto-box {
+.cultural-plate {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  padding: 1rem;
+  border: 1px solid var(--border-fine);
+  border-radius: 4px;
+  padding: 0.95rem 1.1rem;
+  box-shadow: var(--shadow-subtle);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
-  box-shadow: var(--shadow-card);
+  gap: 0.35rem;
   transition: all 0.2s ease;
 }
 
-.picto-box:hover {
-  border-color: var(--accent-ochre);
-  box-shadow: 0 4px 14px rgba(43, 37, 32, 0.07);
+.cultural-plate:hover {
+  border-color: var(--accent-amber);
+  box-shadow: var(--shadow-hover);
 }
 
-.picto-box-header {
+.cultural-plate-header {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
-.picto-icon-svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--accent-terracotta);
+.cultural-plate-glyph {
+  font-family: var(--font-title);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent-crimson);
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--border-rule);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.picto-box .label {
-  font-family: var(--font-heading);
-  font-size: 0.98rem;
+.cultural-plate-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
   font-weight: 700;
   color: var(--ink-primary);
 }
 
-.picto-box .desc {
-  font-size: 0.86rem;
-  color: var(--ink-secondary);
+.cultural-plate-text {
+  font-size: 0.98rem;
   line-height: 1.4;
+  color: var(--ink-secondary);
 }
 
 /* ==========================================================================
-   Иллюстрационные витрины (Картины, карты, гравюры)
+   Иллюстрационные витрины и картографические полотна
    ========================================================================== */
 .visual-frame {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 380px;
-  background: #1a1715;
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
+  min-height: 360px;
+  background: #1c1815;
+  border: 1px solid var(--border-bold);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-stage);
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: zoom-in;
 }
 
 .visual-frame img {
@@ -459,6 +533,31 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
+}
+
+.visual-frame:hover img {
+  transform: scale(1.02);
+}
+
+.zoom-hint-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(38, 32, 27, 0.85);
+  backdrop-filter: blur(4px);
+  color: #f7f4ee;
+  padding: 0.25rem 0.65rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: none;
+  opacity: 0.85;
 }
 
 .visual-caption-badge {
@@ -466,12 +565,13 @@ body {
   bottom: 0.75rem;
   left: 0.75rem;
   right: 0.75rem;
-  background: rgba(28, 23, 19, 0.88);
+  background: rgba(30, 24, 20, 0.9);
   backdrop-filter: blur(4px);
   color: #f7f4ee;
-  padding: 0.5rem 0.95rem;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-ui);
   font-size: 0.82rem;
-  border-radius: 4px;
+  border-radius: 3px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   justify-content: space-between;
@@ -480,21 +580,22 @@ body {
 
 .visual-caption-badge strong {
   color: #f1cf88;
+  font-family: var(--font-display);
 }
 
 /* ==========================================================================
-   Слайд 5: Реалистичный Колумб с естественным ритмом речи
+   Слайд 5: Реалистичный Христофор Колумб (Ораторский монолог)
    ========================================================================== */
 .columbus-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 420px;
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
+  min-height: 400px;
+  border: 1px solid var(--border-bold);
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: var(--shadow-medium);
-  background: #1e2936;
+  box-shadow: var(--shadow-stage);
+  background: #182330;
 }
 
 .columbus-animated-box {
@@ -510,6 +611,8 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Важно: фокусируемся на лице и жесте Колумба на картине */
+  object-position: 22% center;
   transition: opacity 0.1s ease-in-out;
 }
 
@@ -523,29 +626,30 @@ body {
   z-index: 1;
 }
 
-/* Естественный ритм человеческой речи: фразы, слоги и дыхательные паузы */
+/* Естественный человеческий темпоритм речи оратора */
 .is-talking .columbus-frame.mouth-open {
-  animation: columbusNaturalSpeech 3.2s infinite ease-in-out;
+  animation: columbusNaturalCadence 3.4s infinite ease-in-out;
 }
 
-@keyframes columbusNaturalSpeech {
-  0% { opacity: 0; }
-  4% { opacity: 0.9; }
-  8% { opacity: 0.1; }
-  14% { opacity: 0.85; }
-  20% { opacity: 0.2; }
-  26% { opacity: 0.95; }
-  32% { opacity: 0; }
-  38% { opacity: 0.8; }
-  44% { opacity: 0.15; }
-  50% { opacity: 0; }
-  /* Пауза для вдоха оратора */
-  68% { opacity: 0; }
-  72% { opacity: 0.85; }
-  78% { opacity: 0.2; }
-  84% { opacity: 0.9; }
-  90% { opacity: 0.1; }
-  95% { opacity: 0.7; }
+@keyframes columbusNaturalCadence {
+  0%   { opacity: 0; }
+  3%   { opacity: 0.95; }
+  7%   { opacity: 0.15; }
+  12%  { opacity: 0.9; }
+  18%  { opacity: 0.2; }
+  24%  { opacity: 0.85; }
+  30%  { opacity: 0; }
+  /* Пауза в фразе */
+  38%  { opacity: 0; }
+  43%  { opacity: 0.9; }
+  49%  { opacity: 0.25; }
+  56%  { opacity: 0.8; }
+  63%  { opacity: 0; }
+  /* Дыхательная пауза для осмысления слов */
+  76%  { opacity: 0; }
+  81%  { opacity: 0.9; }
+  87%  { opacity: 0.2; }
+  93%  { opacity: 0.75; }
   100% { opacity: 0; }
 }
 
@@ -554,11 +658,11 @@ body {
   top: 1rem;
   left: 1rem;
   z-index: 15;
-  background: rgba(28, 23, 19, 0.88);
+  background: rgba(26, 21, 17, 0.9);
   backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 6px;
-  padding: 0.6rem 1.15rem;
+  border-radius: 4px;
+  padding: 0.65rem 1.15rem;
   color: #fff;
   display: flex;
   align-items: center;
@@ -566,46 +670,46 @@ body {
 }
 
 .columbus-hud-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-title);
   font-size: 0.95rem;
   color: #f1cf88;
   font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
-/* Индикатор звуковой волны живой речи */
 .speech-wave {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  height: 16px;
+  height: 15px;
   margin-left: 0.5rem;
 }
 
 .speech-wave span {
   display: inline-block;
   width: 3px;
-  height: 6px;
+  height: 5px;
   background: #34d399;
   border-radius: 1px;
-  transition: all 0.2s;
 }
 
-.is-talking .speech-wave span:nth-child(1) { animation: wave 0.8s infinite ease-in-out; }
-.is-talking .speech-wave span:nth-child(2) { animation: wave 0.8s infinite 0.2s ease-in-out; }
-.is-talking .speech-wave span:nth-child(3) { animation: wave 0.8s infinite 0.4s ease-in-out; }
-.is-talking .speech-wave span:nth-child(4) { animation: wave 0.8s infinite 0.1s ease-in-out; }
+.is-talking .speech-wave span:nth-child(1) { animation: liveWave 0.8s infinite ease-in-out; }
+.is-talking .speech-wave span:nth-child(2) { animation: liveWave 0.8s infinite 0.2s ease-in-out; }
+.is-talking .speech-wave span:nth-child(3) { animation: liveWave 0.8s infinite 0.4s ease-in-out; }
+.is-talking .speech-wave span:nth-child(4) { animation: liveWave 0.8s infinite 0.1s ease-in-out; }
 
-@keyframes wave {
+@keyframes liveWave {
   0%, 100% { height: 4px; }
   50% { height: 16px; }
 }
 
 .speech-toggle-btn {
-  background: var(--accent-terracotta);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--accent-crimson);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
   border-radius: 4px;
   padding: 0.35rem 0.85rem;
+  font-family: var(--font-ui);
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
@@ -614,27 +718,52 @@ body {
 }
 
 .speech-toggle-btn:hover {
-  background: #b54933;
+  background: #a83d2a;
+}
+
+/* Историческая цитата Колумба в картуше */
+.historical-quote-box {
+  background: var(--bg-card-tint);
+  border: 1px solid var(--border-rule);
+  border-radius: 4px;
+  padding: 1.1rem 1.35rem;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
+  position: relative;
+  box-shadow: var(--shadow-subtle);
+}
+.historical-quote-box::before {
+  content: "«";
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  color: var(--accent-amber);
+  opacity: 0.4;
 }
 
 /* ==========================================================================
-   Слайды 2 и 9: Кинематографические живые сцены для ораторов
+   Слайды 2 и 9: Живые монологи ораторов (Панорамный визуал)
    ========================================================================== */
 .cinematic-hero-box {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 6px;
+  min-height: 420px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid var(--border-medium);
-  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-bold);
+  box-shadow: var(--shadow-stage);
 }
 
 .cinematic-hero-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 10s ease-out;
+  transition: transform 12s ease-out;
 }
 
 .slide.active .cinematic-hero-box img {
@@ -644,34 +773,43 @@ body {
 .cinematic-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(24, 18, 14, 0.5) 100%);
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(26, 20, 16, 0.6) 100%);
   pointer-events: none;
 }
 
-.performer-badge {
+/* Текстовый свиток / картуш для живого монолога со сцены */
+.monologue-cartouche {
   position: absolute;
-  bottom: 1.25rem;
-  right: 1.25rem;
-  background: rgba(28, 23, 19, 0.88);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #f7f4ee;
-  padding: 0.65rem 1.25rem;
-  border-radius: 5px;
-  font-size: 0.88rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  bottom: 2rem;
+  left: 2.5rem;
+  max-width: 620px;
+  background: var(--bg-cartouche);
+  border: 1px solid var(--border-bold);
+  border-radius: 4px;
+  padding: 1.35rem 1.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
   z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
 }
 
-.performer-badge .live-dot {
-  width: 9px;
-  height: 9px;
+.monologue-cartouche-tag {
+  font-family: var(--font-title);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-crimson);
+  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.monologue-cartouche-tag .live-dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #34d399;
-  box-shadow: 0 0 10px #34d399;
+  box-shadow: 0 0 8px #34d399;
   animation: pulseLive 2s infinite;
 }
 
@@ -680,62 +818,56 @@ body {
   50% { opacity: 0.4; transform: scale(1.2); }
 }
 
+.monologue-cartouche-quote {
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink-primary);
+}
+
 /* ==========================================================================
-   Таймлайны и хронологические шаги
+   Судовой журнал и хроника (Слайд 6)
    ========================================================================== */
-.timeline-stepper {
+.nautical-logbook {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
-  justify-content: center;
 }
 
-.timeline-step {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  padding: 0.85rem 1rem;
+.logbook-entry {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-fine);
+  border-radius: 4px;
+  padding: 0.95rem 1.15rem;
+  box-shadow: var(--shadow-subtle);
 }
 
-.timeline-date {
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
+.logbook-timestamp {
+  font-family: var(--font-title);
+  font-size: 0.82rem;
   font-weight: 700;
-  color: var(--accent-terracotta);
-  min-width: 105px;
-  flex-shrink: 0;
+  color: var(--accent-crimson);
+  margin-bottom: 0.25rem;
 }
 
-.timeline-info strong {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: 0.98rem;
-  color: var(--ink-primary);
-  margin-bottom: 0.2rem;
-}
-
-.timeline-info p {
-  font-size: 0.88rem;
+.logbook-text {
+  font-size: 1.02rem;
+  line-height: 1.45;
   color: var(--ink-secondary);
-  line-height: 1.4;
 }
 
 /* ==========================================================================
-   Нижний презентационный бар (Footer HUD) • Удобные элементы
+   Нижний презентационный бар (Footer HUD)
    ========================================================================== */
 .presentation-footer {
-  height: 66px;
+  height: 64px;
   padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-subtle);
-  box-shadow: 0 -2px 8px rgba(43, 37, 32, 0.03);
+  background: var(--bg-stage);
+  border-top: 1px solid var(--border-rule);
+  box-shadow: 0 -1px 6px rgba(38, 32, 27, 0.04);
   z-index: 100;
   flex-shrink: 0;
 }
@@ -744,41 +876,41 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  height: 42px;
-  padding: 0 1.35rem;
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border-medium);
-  border-radius: 6px;
-  font-family: var(--font-heading);
-  font-size: 0.92rem;
+  height: 40px;
+  padding: 0 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-rule);
+  border-radius: 4px;
+  font-family: var(--font-title);
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--ink-primary);
   cursor: pointer;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   transition: all 0.2s ease;
 }
 
 .nav-arrow-btn:hover:not(:disabled) {
   background: #ffffff;
-  border-color: var(--accent-terracotta);
-  color: var(--accent-terracotta);
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(43, 37, 32, 0.08);
+  box-shadow: 0 3px 10px rgba(38, 32, 27, 0.08);
 }
 
 .nav-arrow-btn:disabled {
-  opacity: 0.3;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
-/* Удобная интерактивная шкала номеров слайдов */
+/* Интерактивная лента слайдов 1..10 */
 .progress-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   flex: 1;
-  max-width: 580px;
+  max-width: 600px;
   margin: 0 1.5rem;
 }
 
@@ -790,13 +922,13 @@ body {
 }
 
 .slide-pill {
-  width: 32px;
+  width: 34px;
   height: 26px;
-  border-radius: 4px;
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border-medium);
+  border-radius: 3px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-rule);
   color: var(--ink-secondary);
-  font-family: var(--font-heading);
+  font-family: var(--font-title);
   font-size: 0.78rem;
   font-weight: 700;
   display: flex;
@@ -808,42 +940,111 @@ body {
 
 .slide-pill:hover {
   background: #ffffff;
-  border-color: var(--accent-terracotta);
-  color: var(--accent-terracotta);
+  border-color: var(--accent-crimson);
+  color: var(--accent-crimson);
 }
 
 .slide-pill.active {
-  background: var(--accent-terracotta);
-  border-color: var(--accent-terracotta);
+  background: var(--accent-crimson);
+  border-color: var(--accent-crimson);
   color: #ffffff;
   transform: scale(1.08);
-  box-shadow: 0 2px 6px rgba(158, 70, 50, 0.3);
+  box-shadow: 0 2px 6px rgba(143, 52, 36, 0.3);
 }
 
 .slide-pill.passed {
-  background: rgba(176, 129, 50, 0.15);
-  border-color: rgba(176, 129, 50, 0.4);
-  color: var(--accent-ochre);
+  background: rgba(168, 121, 44, 0.12);
+  border-color: rgba(168, 121, 44, 0.4);
+  color: var(--accent-amber);
 }
 
 .hotkey-hint {
-  font-size: 0.74rem;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
   color: var(--ink-muted);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
 }
 
 /* ==========================================================================
-   Шторка оглавления всех слайдов (Thumbnail Drawer)
+   Модальное окно для полноразмерного просмотра карт (Lightbox)
+   ========================================================================== */
+.image-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 14, 12, 0.88);
+  backdrop-filter: blur(6px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+.image-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-modal-box {
+  position: relative;
+  max-width: 94vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-modal-box img {
+  max-width: 100%;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #110e0c;
+}
+
+.image-modal-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #f7f4ee;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.image-modal-close:hover {
+  color: var(--accent-crimson);
+  transform: scale(1.15);
+}
+
+.image-modal-caption {
+  margin-top: 0.85rem;
+  color: #f7f4ee;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  text-align: center;
+  max-width: 800px;
+}
+
+/* ==========================================================================
+   Шторка оглавления всех слайдов (Drawer)
    ========================================================================== */
 .drawer-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(25, 20, 16, 0.5);
+  background: rgba(22, 18, 15, 0.55);
   backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .drawer-backdrop.open {
@@ -856,11 +1057,11 @@ body {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 400px;
+  width: 420px;
   max-width: 85vw;
-  background: var(--bg-card);
-  border-left: 1px solid var(--border-medium);
-  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  background: var(--bg-stage);
+  border-left: 1px solid var(--border-bold);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -873,14 +1074,14 @@ body {
 
 .drawer-header {
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-rule);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .drawer-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--ink-primary);
@@ -892,12 +1093,9 @@ body {
   font-size: 1.4rem;
   cursor: pointer;
   color: var(--ink-muted);
-  padding: 0.2rem;
-  line-height: 1;
 }
-
 .drawer-close:hover {
-  color: var(--accent-terracotta);
+  color: var(--accent-crimson);
 }
 
 .drawer-list {
@@ -914,59 +1112,61 @@ body {
   align-items: center;
   gap: 0.85rem;
   padding: 0.75rem 1rem;
-  background: var(--bg-card-alt);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-fine);
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .drawer-item:hover, .drawer-item.active {
   background: #ffffff;
-  border-color: var(--accent-terracotta);
+  border-color: var(--accent-crimson);
 }
 
 .drawer-item.active {
-  border-left: 4px solid var(--accent-terracotta);
+  border-left: 4px solid var(--accent-crimson);
 }
 
 .drawer-item-num {
-  font-family: var(--font-heading);
+  font-family: var(--font-title);
   font-size: 1rem;
   font-weight: 700;
-  color: var(--accent-terracotta);
+  color: var(--accent-crimson);
   min-width: 24px;
 }
 
 .drawer-item-text strong {
   display: block;
-  font-size: 0.88rem;
-  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-family: var(--font-display);
   color: var(--ink-primary);
 }
 
 .drawer-item-text span {
-  font-size: 0.76rem;
+  font-size: 0.8rem;
+  font-family: var(--font-ui);
   color: var(--ink-muted);
 }
 
 /* ==========================================================================
-   Адаптивность (проекторы, ноутбуки, мобильные)
+   Адаптивность (проекторы, ноутбуки, мобильные экраны)
    ========================================================================== */
 @media (max-width: 1024px) {
-  .slide { padding: 1.5rem 2rem 1.25rem; }
+  .slide { padding: 1.25rem 1.75rem 1rem; }
   .slide-title { font-size: 1.5rem; }
   .slide-content.split-2, .slide-content.split-visual-large { grid-template-columns: 1fr; }
   .visual-frame, .columbus-stage { min-height: 280px; }
   .stage-nav-arrow { display: none; }
+  .monologue-cartouche { left: 1.5rem; right: 1.5rem; bottom: 1.5rem; max-width: none; }
 }
 
 @media (max-width: 640px) {
-  .brand-title { font-size: 0.85rem; }
-  .brand-act, .hotkey-hint { display: none; }
+  .brand-title { font-size: 0.88rem; }
+  .brand-act-pill, .hotkey-hint { display: none; }
   .slide { padding: 1rem; }
   .slide-title { font-size: 1.25rem; }
-  .pictogram-grid { grid-template-columns: 1fr; }
+  .cultural-quad-grid { grid-template-columns: 1fr; }
   .presentation-footer { padding: 0 1rem; }
-  .slide-pill { width: 24px; height: 22px; font-size: 0.7rem; }
+  .slide-pill { width: 26px; height: 24px; font-size: 0.72rem; }
 }
