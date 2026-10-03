@@ -1,24 +1,35 @@
-/* Historical cartographic & book design */
+/* ==========================================================================
+   Коренные народы Америки и открытие Нового Света
+   Интерактивная веб-презентация в стиле старинного морского манускрипта
+   ========================================================================== */
+
 @charset "UTF-8";
 
 :root {
-  --font-body: "Georgia", "Palatino Linotype", "Book Antiqua", Palatino, serif;
-  --font-heading: "Garamond", "Baskerville", "Georgia", serif;
-  --font-mono: "Courier New", Courier, monospace;
+  --font-heading: "Cinzel", "Garamond", "Baskerville", "Georgia", serif;
+  --font-serif: "Georgia", "Palatino Linotype", "Book Antiqua", serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --bg-paper: #f7f3eb;
-  --bg-parchment: #fdfbf7;
-  --bg-inset: #efe8dc;
-  
-  --ink-main: #2a2421;
-  --ink-muted: #5c534d;
-  --ink-faded: #8c827a;
-  
-  --rubric-red: #7c2d22;
-  --prussian-blue: #1e3d59;
-  --antique-gold: #9c6f37;
-  --line-rule: #dcd3c4;
-  --line-dark: #b8ab96;
+  /* Палитра старинного манускрипта и морских карт */
+  --bg-parchment: #f6f1e7;
+  --bg-parchment-light: #fdfaf3;
+  --bg-parchment-deep: #ede4d1;
+  --bg-card: rgba(253, 250, 243, 0.94);
+
+  --ink-primary: #241c17;
+  --ink-secondary: #53453b;
+  --ink-muted: #7d6e62;
+
+  --accent-terracotta: #9a3826;
+  --accent-gold: #b38234;
+  --accent-navy: #1b354d;
+  --accent-crimson: #7f1d1d;
+
+  --border-ornate: #cbbca5;
+  --border-strong: #968369;
+
+  --shadow-card: 0 8px 24px rgba(36, 28, 23, 0.12);
+  --shadow-elevated: 0 16px 40px rgba(36, 28, 23, 0.22);
 }
 
 *, *::before, *::after {
@@ -27,573 +38,830 @@
   padding: 0;
 }
 
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-serif);
+  color: var(--ink-primary);
+  background-color: var(--bg-parchment);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Фактура античного пергамента */
 body {
-  font-family: var(--font-body);
-  color: var(--ink-main);
-  line-height: 1.75;
-  background-color: var(--bg-paper);
-  background-image: 
-    radial-gradient(ellipse at 15% 10%, rgba(223, 209, 185, 0.45) 0%, transparent 60%),
-    radial-gradient(ellipse at 85% 85%, rgba(205, 184, 155, 0.35) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 50%, rgba(245, 237, 224, 0.8) 0%, rgba(235, 223, 205, 0.3) 100%),
-    url("data:image/svg+xml,%3Csvg width='180' height='180' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23fff' surfaceScale='1.2'%3E%3CfeDistantLight azimuth='60' elevation='50'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='180' height='180' fill='%23f7f3eb'/%3E%3Crect width='180' height='180' filter='url(%23paper)' opacity='0.07'/%3E%3C/svg%3E");
-  background-attachment: fixed;
-  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 10% 15%, rgba(203, 188, 165, 0.4) 0%, transparent 65%),
+    radial-gradient(ellipse at 90% 85%, rgba(186, 167, 137, 0.45) 0%, transparent 65%),
+    radial-gradient(ellipse at 50% 50%, rgba(246, 241, 231, 0.85) 0%, rgba(237, 228, 209, 0.95) 100%),
+    url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035' numOctaves='4' result='n'/%3E%3CfeDiffuseLighting in='n' lighting-color='%23fff' surfaceScale='1'%3E%3CfeDistantLight azimuth='60' elevation='55'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='240' height='240' fill='%23f6f1e7'/%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: auto, auto, auto, 240px 240px;
   display: flex;
   flex-direction: column;
 }
 
-.container {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  width: 100%;
-}
-
-/* Верхний колонтитул */
-.site-header {
-  position: relative;
-  z-index: 999999;
-  border-bottom: 2px solid var(--line-dark);
-  padding: 1.25rem 0;
-  background-color: var(--bg-paper);
-}
-
-.header-inner {
+/* ==========================================================================
+   Верхний презентационный HUD (Header)
+   ========================================================================== */
+.presentation-header {
+  height: 56px;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  background: var(--bg-card);
+  border-bottom: 2px solid var(--border-ornate);
+  box-shadow: 0 2px 8px rgba(36, 28, 23, 0.06);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.site-title {
-  font-family: var(--font-heading);
+.brand-symbol {
   font-size: 1.35rem;
+  color: var(--accent-gold);
+  line-height: 1;
+}
+
+.brand-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--ink-main);
-  text-decoration: none;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  color: var(--ink-primary);
   text-transform: uppercase;
 }
 
-.site-title span {
-  color: var(--rubric-red);
-  font-style: italic;
-  text-transform: none;
-  margin-left: 0.35rem;
-  font-weight: normal;
+.brand-act {
+  display: inline-block;
+  padding: 0.15rem 0.65rem;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-terracotta);
+  background: rgba(154, 56, 38, 0.08);
+  border: 1px solid rgba(154, 56, 38, 0.25);
+  border-radius: 3px;
+  transition: all 0.3s ease;
 }
 
-.nav-links {
+.header-controls {
   display: flex;
-  gap: 1.5rem;
-  list-style: none;
   align-items: center;
+  gap: 0.75rem;
 }
 
-.nav-links a {
-  color: var(--ink-main);
-  text-decoration: none;
+.slide-counter {
+  font-family: var(--font-heading);
   font-size: 0.95rem;
-  border-bottom: 1px dotted transparent;
-  transition: border-color 0.2s, color 0.2s;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+  padding: 0 0.5rem;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--rubric-red);
-  border-bottom-color: var(--rubric-red);
+.slide-counter span {
+  color: var(--accent-terracotta);
+  font-weight: 700;
+  font-size: 1.15rem;
 }
 
-/* Выпадающее меню глав */
-.dropdown {
+.hud-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 34px;
+  padding: 0 0.85rem;
+  background: var(--bg-parchment-light);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hud-btn:hover {
+  background: var(--bg-parchment-deep);
+  border-color: var(--accent-gold);
+  color: var(--accent-terracotta);
+}
+
+/* ==========================================================================
+   Главная сцена презентации (16:9 Stage)
+   ========================================================================== */
+.presentation-viewport {
+  flex: 1;
   position: relative;
-  padding-bottom: 0.5rem;
-  margin-bottom: -0.5rem;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
 }
 
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: calc(100% + 6px);
-  right: 0;
-  background-color: #fdfbf7 !important;
-  opacity: 1 !important;
-  border: 1px solid var(--line-dark);
-  box-shadow: 0 12px 36px rgba(42, 36, 33, 0.3);
-  min-width: 310px;
-  list-style: none;
-  padding: 0.5rem 0;
-  z-index: 9999999;
-  border-radius: 2px;
+.presentation-stage {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  height: 100%;
+  max-height: 810px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-ornate);
+  box-shadow: var(--shadow-elevated);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-/* Невидимый мост перекрытия, чтобы меню не закрывалось при движении мыши */
-.dropdown-menu::before {
+/* Изящная виньетка старинной карты */
+.presentation-stage::before {
   content: "";
   position: absolute;
-  top: -16px;
-  left: 0;
-  right: 0;
-  height: 16px;
-  background: transparent;
+  inset: 6px;
+  border: 1px solid rgba(186, 167, 137, 0.4);
+  pointer-events: none;
+  z-index: 20;
 }
 
-.dropdown:hover .dropdown-menu,
-.dropdown:focus-within .dropdown-menu,
-.dropdown.is-open .dropdown-menu {
-  display: block;
+.corner-ornament {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border-strong);
+  pointer-events: none;
+  z-index: 25;
 }
+.corner-tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.corner-tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.corner-bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.corner-br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
 
-.dropdown-menu li a {
-  display: block;
-  padding: 0.5rem 1.2rem;
-  font-size: 0.9rem;
-  color: var(--ink-main);
-  border-bottom: none;
-  transition: background-color 0.15s, color 0.15s;
-}
-
-.dropdown-menu li a:hover {
-  background: var(--bg-inset);
-  color: var(--rubric-red);
-}
-
-/* Титул и героический блок */
-.hero {
-  padding: 3.5rem 0 2rem;
-  text-align: center;
-  border-bottom: 1px solid var(--line-rule);
-  margin-bottom: 2.5rem;
-  position: relative;
+/* ==========================================================================
+   Слайды: логика анимации и компоновки
+   ========================================================================== */
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: 2.25rem 3rem 1.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.985);
+  transition: opacity 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
   z-index: 1;
 }
 
-.hero::after {
-  content: "❧ ❦ ☙";
-  display: block;
-  font-size: 1.2rem;
-  color: var(--antique-gold);
-  margin-top: 1.5rem;
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 10;
 }
 
-.hero-rubric {
-  font-family: var(--font-heading);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 0.85rem;
-  color: var(--rubric-red);
-  margin-bottom: 0.75rem;
-}
-
-.hero-title {
-  font-family: var(--font-heading);
-  font-size: 2.4rem;
-  line-height: 1.25;
-  color: var(--ink-main);
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.hero-subtitle {
-  font-size: 1.15rem;
-  font-style: italic;
-  color: var(--ink-muted);
-  max-width: 760px;
-  margin: 0 auto;
-}
-
-/* Текстовые блоки и карточки */
-.main-content {
-  flex: 1;
-  padding-bottom: 4rem;
-}
-
-h1, h2, h3, h4 {
-  font-family: var(--font-heading);
-  color: var(--ink-main);
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-
-h2 {
-  font-size: 1.6rem;
-  border-bottom: 1px solid var(--line-dark);
-  padding-bottom: 0.35rem;
-  margin-top: 2.5rem;
-}
-
-h3 {
-  font-size: 1.25rem;
-  color: var(--prussian-blue);
-}
-
-p {
+/* Заголовки слайда */
+.slide-header {
   margin-bottom: 1.25rem;
-  text-align: justify;
-  text-justify: inter-word;
+  text-align: left;
+  position: relative;
+  z-index: 5;
 }
 
-/* Старинная буквица */
-.drop-cap::first-letter {
-  float: left;
-  font-family: var(--font-heading);
-  font-size: 3.4rem;
-  line-height: 0.85;
-  padding-top: 4px;
-  padding-right: 8px;
-  padding-bottom: 2px;
-  color: var(--rubric-red);
-  font-weight: bold;
-}
-
-/* Блок гипотезы и цитаты */
-.thesis-box {
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-  border-left: 4px solid var(--rubric-red);
-  padding: 1.5rem 1.75rem;
-  margin: 2rem 0;
-  box-shadow: inset 0 0 15px rgba(220, 211, 196, 0.4);
-}
-
-.thesis-box h3 {
-  margin-top: 0;
-  color: var(--rubric-red);
-  font-size: 1.1rem;
+.slide-act-tag {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.thesis-box p {
-  font-style: italic;
-  margin-bottom: 0;
-  font-size: 1.05rem;
-}
-
-blockquote {
-  border-left: 3px solid var(--antique-gold);
-  background: var(--bg-inset);
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: var(--ink-main);
-}
-
-blockquote cite {
-  display: block;
-  text-align: right;
-  font-style: normal;
-  font-size: 0.85rem;
-  color: var(--ink-muted);
-  margin-top: 0.5rem;
-}
-
-/* Сетка глав */
-.chapter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.chapter-card {
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-  padding: 1.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.chapter-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(42, 36, 33, 0.08);
-  border-color: var(--rubric-red);
-}
-
-.chapter-num {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  color: var(--rubric-red);
-  font-weight: bold;
+  letter-spacing: 0.12em;
+  color: var(--accent-terracotta);
   margin-bottom: 0.25rem;
 }
 
-.chapter-card h3 {
-  margin-top: 0;
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
-}
-
-.chapter-card p {
-  font-size: 0.9rem;
-  color: var(--ink-muted);
-  margin-bottom: 1rem;
-}
-
-.chapter-card a {
-  color: var(--prussian-blue);
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 0.9rem;
-  border-bottom: 1px dotted var(--prussian-blue);
-  align-self: flex-start;
-}
-
-.chapter-card a:hover {
-  color: var(--rubric-red);
-  border-bottom-color: var(--rubric-red);
-}
-
-/* Иллюстрации и карты */
-.plate {
-  margin: 2.25rem 0;
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-  padding: 0.75rem;
-  box-shadow: 0 4px 10px rgba(42, 36, 33, 0.06);
-}
-
-.plate img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border: 1px solid var(--line-rule);
-  background: #fff;
-}
-
-.plate-caption {
-  padding: 0.75rem 0.5rem 0.25rem;
-  font-size: 0.88rem;
-  color: var(--ink-muted);
-  text-align: center;
-}
-
-.plate-caption strong {
-  color: var(--ink-main);
-}
-
-.plate-source {
-  font-size: 0.78rem;
-  color: var(--ink-faded);
-  margin-top: 0.35rem;
-}
-
-.plate-source a {
-  color: var(--prussian-blue);
-  text-decoration: underline;
-}
-
-/* Таблицы */
-.table-wrapper {
-  overflow-x: auto;
-  margin: 1.75rem 0;
-}
-
-table.archival-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.92rem;
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-}
-
-table.archival-table th,
-table.archival-table td {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--line-rule);
-  text-align: left;
-}
-
-table.archival-table th {
-  background: var(--bg-inset);
+.slide-title {
   font-family: var(--font-heading);
-  color: var(--ink-main);
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--line-dark);
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink-primary);
+  line-height: 1.2;
 }
 
-table.archival-table tr:hover {
-  background: rgba(220, 211, 196, 0.25);
+.slide-subtitle {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ink-muted);
+  margin-top: 0.2rem;
 }
 
-/* Звуковые кнопки */
-.audio-btn {
-  background: var(--bg-inset);
-  border: 1px solid var(--line-dark);
-  color: var(--ink-main);
-  padding: 0.25rem 0.65rem;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  cursor: pointer;
-  border-radius: 2px;
-  display: inline-flex;
+/* Контейнер содержимого слайда */
+.slide-content {
+  flex: 1;
+  display: grid;
+  gap: 1.5rem;
+  min-height: 0;
+  position: relative;
+  z-index: 5;
+}
+
+/* 2-колоночная сетка (Визуал + Инфографика) */
+.slide-content.split-2 {
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 0.35rem;
-  margin: 0.2rem;
 }
 
-.audio-btn:hover {
-  background: var(--prussian-blue);
-  color: #fff;
-  border-color: var(--prussian-blue);
+.slide-content.split-visual-large {
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
 }
 
-/* Опрос */
-.survey-box {
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-  padding: 1.75rem;
-  margin: 2rem 0;
-}
-
-.survey-question {
-  margin-bottom: 1.75rem;
-}
-
-.survey-question h4 {
-  font-size: 1.05rem;
-  margin-bottom: 0.75rem;
-  color: var(--prussian-blue);
-}
-
-.survey-options {
+/* Полноэкранный кинематографический визуал */
+.slide-content.full-cinematic {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  height: 100%;
+  position: relative;
 }
 
-.survey-btn {
-  background: var(--bg-inset);
-  border: 1px solid var(--line-dark);
-  color: var(--ink-main);
-  padding: 0.65rem 1rem;
-  text-align: left;
-  font-family: inherit;
-  font-size: 0.95rem;
-  cursor: pointer;
+/* ==========================================================================
+   Компоненты инфографики и пиктограмм
+   ========================================================================== */
+.info-cards-stack {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.85rem;
 }
 
-.survey-btn:hover {
-  background: #e6decb;
+.info-card {
+  background: var(--bg-parchment-light);
+  border: 1px solid var(--border-ornate);
+  border-left: 4px solid var(--accent-terracotta);
+  border-radius: 3px;
+  padding: 0.9rem 1.15rem;
+  box-shadow: 0 2px 8px rgba(36, 28, 23, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.survey-btn.voted {
-  border-color: var(--rubric-red);
-  background: rgba(124, 45, 34, 0.08);
+.info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(36, 28, 23, 0.1);
+  border-left-color: var(--accent-gold);
 }
 
-.survey-bar {
-  height: 4px;
-  background: var(--antique-gold);
-  margin-top: 0.35rem;
+.info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
 }
 
-/* Глоссарий */
-.glossary-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-family: inherit;
-  font-size: 1rem;
-  background: var(--bg-parchment);
-  border: 1px solid var(--line-dark);
-  color: var(--ink-main);
-  margin-bottom: 1.5rem;
+.info-card-icon {
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
-.glossary-input:focus {
-  outline: none;
-  border-color: var(--rubric-red);
-}
-
-.term-entry {
-  border-bottom: 1px solid var(--line-rule);
-  padding: 1rem 0;
-}
-
-.term-entry dt {
+.info-card-title {
   font-family: var(--font-heading);
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--rubric-red);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-primary);
 }
 
-.term-entry dt em {
-  font-size: 0.95rem;
-  font-style: italic;
-  color: var(--prussian-blue);
-  font-weight: normal;
-  margin-left: 0.5rem;
+.info-card-text {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink-secondary);
 }
 
-.term-entry dd {
+.info-card-meta {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-terracotta);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   margin-top: 0.35rem;
-  color: var(--ink-muted);
 }
 
-/* Навигация между страницами */
-.pagination {
+/* Сетка пиктограмм */
+.pictogram-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+}
+
+.picto-box {
+  background: var(--bg-parchment-light);
+  border: 1px solid var(--border-ornate);
+  border-radius: 3px;
+  padding: 0.85rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.picto-box:hover {
+  background: var(--bg-parchment-deep);
+  border-color: var(--accent-gold);
+}
+
+.picto-box .icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.picto-box .label {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.picto-box .desc {
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   Иллюстрационные витрины и гравюры
+   ========================================================================== */
+.visual-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-height: 520px;
+  background: #110e0c;
+  border: 2px solid var(--border-strong);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.visual-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.visual-frame.contain-fit img {
+  object-fit: contain;
+  background: var(--bg-parchment-deep);
+}
+
+.visual-caption-badge {
+  position: absolute;
+  bottom: 0.65rem;
+  left: 0.65rem;
+  right: 0.65rem;
+  background: rgba(27, 21, 17, 0.88);
+  backdrop-filter: blur(4px);
+  color: #f7f3eb;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  border-radius: 2px;
+  border: 1px solid rgba(203, 188, 165, 0.35);
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid var(--line-dark);
-  padding-top: 1.5rem;
-  margin-top: 3rem;
+  align-items: center;
 }
 
-.pagination a {
-  text-decoration: none;
-  color: var(--ink-main);
+.visual-caption-badge strong {
+  color: var(--accent-gold);
+}
+
+/* ==========================================================================
+   Слайд 5: Анимированный говорящий Колумб
+   ========================================================================== */
+.columbus-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--border-strong);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: var(--shadow-elevated);
+  background: #2b3947;
+}
+
+.columbus-animated-box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.columbus-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.08s linear;
+}
+
+.columbus-frame.mouth-open {
+  opacity: 0;
+  z-index: 2;
+}
+
+.columbus-frame.mouth-closed {
+  opacity: 1;
+  z-index: 1;
+}
+
+/* Активное говорение: мимика */
+.is-talking .columbus-frame.mouth-open {
+  animation: columbusTalk 0.45s infinite ease-in-out alternate;
+}
+
+@keyframes columbusTalk {
+  0%, 30% { opacity: 0; }
+  50%, 100% { opacity: 1; }
+}
+
+.columbus-hud {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 15;
+  background: rgba(27, 21, 17, 0.85);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.columbus-hud-title {
+  font-family: var(--font-heading);
   font-size: 0.95rem;
-  border-bottom: 1px dotted var(--line-dark);
+  color: var(--accent-gold);
+  font-weight: 700;
 }
 
-.pagination a:hover {
-  color: var(--rubric-red);
-  border-bottom-color: var(--rubric-red);
+.speech-toggle-btn {
+  background: var(--accent-terracotta);
+  border: 1px solid var(--accent-gold);
+  color: #fff;
+  border-radius: 2px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
 }
 
-/* Подвал */
-.site-footer {
-  border-top: 2px solid var(--line-dark);
-  padding: 2rem 0;
-  background: var(--bg-parchment);
+.speech-toggle-btn:hover {
+  background: #b5402a;
+}
+
+/* ==========================================================================
+   Слайд 2 и 7: Кинематографические живые сцены для актеров
+   ========================================================================== */
+.cinematic-hero-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 2px solid var(--border-strong);
+  box-shadow: var(--shadow-elevated);
+}
+
+.cinematic-hero-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 12s ease-out;
+}
+
+.slide.active .cinematic-hero-box img {
+  transform: scale(1.06);
+}
+
+.cinematic-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(20, 15, 12, 0.55) 100%);
+  pointer-events: none;
+}
+
+.performer-badge {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  background: rgba(36, 28, 23, 0.88);
+  border: 1px solid var(--border-strong);
+  color: #f7f3eb;
+  padding: 0.65rem 1.25rem;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  box-shadow: var(--shadow-card);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.performer-badge .live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: pulseLive 1.8s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+/* ==========================================================================
+   Хронологические шкалы и таймлайны
+   ========================================================================== */
+.timeline-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-parchment-light);
+  border: 1px solid var(--border-ornate);
+  border-radius: 3px;
+}
+
+.timeline-date {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent-terracotta);
+  min-width: 105px;
+  flex-shrink: 0;
+}
+
+.timeline-info strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--ink-primary);
+  margin-bottom: 0.15rem;
+}
+
+.timeline-info p {
   font-size: 0.85rem;
+  color: var(--ink-secondary);
+  line-height: 1.35;
+}
+
+/* ==========================================================================
+   Нижний презентационный бар (Footer HUD)
+   ========================================================================== */
+.presentation-footer {
+  height: 64px;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border-top: 2px solid var(--border-ornate);
+  box-shadow: 0 -2px 8px rgba(36, 28, 23, 0.06);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.nav-arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 42px;
+  padding: 0 1.25rem;
+  background: var(--bg-parchment-light);
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+}
+
+.nav-arrow-btn:hover:not(:disabled) {
+  background: var(--bg-parchment-deep);
+  border-color: var(--accent-gold);
+  color: var(--accent-terracotta);
+  transform: translateY(-1px);
+}
+
+.nav-arrow-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.progress-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+  max-width: 480px;
+  margin: 0 1.5rem;
+}
+
+.progress-segments {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.progress-dot {
+  flex: 1;
+  height: 5px;
+  background: var(--border-ornate);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: var(--accent-terracotta);
+  transform: scaleY(1.4);
+}
+
+.progress-dot.passed {
+  background: var(--accent-gold);
+}
+
+.hotkey-hint {
+  font-size: 0.72rem;
+  font-family: var(--font-sans);
   color: var(--ink-muted);
-  text-align: center;
+  letter-spacing: 0.04em;
 }
 
-.site-footer a {
-  color: var(--prussian-blue);
-  text-decoration: none;
+/* ==========================================================================
+   Шторка миниатюр слайдов (Thumbnail Drawer)
+   ========================================================================== */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 15, 12, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
 }
 
-.site-footer a:hover {
-  text-decoration: underline;
+.drawer-backdrop.open {
+  opacity: 1;
+  visibility: visible;
 }
 
-@media (max-width: 768px) {
-  .header-inner {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .nav-links {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-  .hero-title {
-    font-size: 1.85rem;
-  }
+.thumbnail-drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 380px;
+  max-width: 85vw;
+  background: var(--bg-parchment-light);
+  border-left: 2px solid var(--border-strong);
+  box-shadow: -8px 0 32px rgba(20, 15, 12, 0.25);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.drawer-backdrop.open .thumbnail-drawer {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-ornate);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.drawer-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ink-muted);
+}
+
+.drawer-close:hover {
+  color: var(--accent-terracotta);
+}
+
+.drawer-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-parchment);
+  border: 1px solid var(--border-ornate);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-item:hover, .drawer-item.active {
+  background: var(--bg-parchment-deep);
+  border-color: var(--accent-gold);
+}
+
+.drawer-item.active {
+  border-left: 4px solid var(--accent-terracotta);
+}
+
+.drawer-item-num {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-terracotta);
+  min-width: 24px;
+}
+
+.drawer-item-text strong {
+  display: block;
+  font-size: 0.88rem;
+  font-family: var(--font-heading);
+  color: var(--ink-primary);
+}
+
+.drawer-item-text span {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   Адаптивность (проекторы, ноутбуки, мобильные)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .slide { padding: 1.5rem 1.75rem 1.25rem; }
+  .slide-title { font-size: 1.5rem; }
+  .slide-content.split-2, .slide-content.split-visual-large { grid-template-columns: 1fr; }
+  .visual-frame { max-height: 320px; }
+}
+
+@media (max-width: 640px) {
+  .brand-title { font-size: 0.85rem; }
+  .brand-act { display: none; }
+  .hotkey-hint { display: none; }
+  .presentation-stage::before, .corner-ornament { display: none; }
+  .slide { padding: 1rem 1.2rem; }
+  .slide-title { font-size: 1.25rem; }
+  .pictogram-grid { grid-template-columns: 1fr; }
 }

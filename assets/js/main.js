@@ -1,185 +1,353 @@
-document.addEventListener("DOMContentLoaded", function () {
-  initNavDropdown();
-  initAudio();
-  initSurvey();
-  initGlossary();
-});
+/**
+ * Коренные народы Америки и открытие Нового Света
+ * Контроллер интерактивной веб-презентации
+ */
 
-function initAudio() {
-  var buttons = document.querySelectorAll(".audio-btn");
-  buttons.forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var word = btn.getAttribute("data-word") || btn.textContent.trim();
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-        var msg = new SpeechSynthesisUtterance(word);
-        msg.lang = "de-DE";
-        msg.rate = 0.85;
-        window.speechSynthesis.speak(msg);
+(function () {
+  'use strict';
+
+  // DOM элементы
+  var slides = Array.from(document.querySelectorAll('.slide'));
+  var totalSlides = slides.length;
+  var currentSlideIndex = 0;
+
+  var currentSlideNumEl = document.getElementById('current-slide-num');
+  var actIndicatorEl = document.getElementById('act-indicator');
+  var btnPrev = document.getElementById('btn-prev');
+  var btnNext = document.getElementById('btn-next');
+  var progressContainer = document.getElementById('progress-dots');
+
+  var btnFullscreen = document.getElementById('btn-fullscreen');
+  var fsIcon = document.getElementById('fs-icon');
+  var fsText = document.getElementById('fs-text');
+
+  var btnThumbnails = document.getElementById('btn-thumbnails');
+  var drawerBackdrop = document.getElementById('drawer-backdrop');
+  var drawerClose = document.getElementById('btn-drawer-close');
+  var drawerList = document.getElementById('drawer-list');
+
+  var btnColumbusToggle = document.getElementById('btn-columbus-toggle');
+  var columbusAvatar = document.getElementById('columbus-avatar');
+
+  // Инициализация
+  function init() {
+    buildProgressDots();
+    buildDrawerList();
+    bindEvents();
+
+    // Проверяем hash в URL (#slide-3 -> слайд 3)
+    var initialSlide = parseHash();
+    goToSlide(initialSlide, false);
+  }
+
+  function parseHash() {
+    var match = window.location.hash.match(/slide-(\d+)/);
+    if (match) {
+      var num = parseInt(match[1], 10);
+      if (num >= 1 && num <= totalSlides) {
+        return num - 1;
       }
-    });
-  });
-}
-
-function initSurvey() {
-  var container = document.getElementById("survey-app");
-  if (!container) return;
-
-  var state = JSON.parse(localStorage.getItem("dialect_poll_v1")) || {
-    q1: {
-      title: "1. Какое слово вы выбираете для обозначения булочки?",
-      answers: [
-        { text: "Brötchen (Север, Центр, норма)", count: 140 },
-        { text: "Semmel (Бавария, Австрия)", count: 95 },
-        { text: "Schrippe (Берлин)", count: 42 },
-        { text: "Weck / Weckle (Баден-Вюртемберг)", count: 35 },
-        { text: "Rundstück (Гамбург)", count: 18 }
-      ]
-    },
-    q2: {
-      title: "2. Звуковая форма по Второму передвижению согласных:",
-      answers: [
-        { text: "machen / ich / das (Верхненемецкий сдвиг)", count: 228 },
-        { text: "maken / ik / dat (Нижненемецкий архаизм)", count: 62 }
-      ]
-    },
-    q3: {
-      title: "3. Роль диалекта в современном немецком пространстве:",
-      answers: [
-        { text: "Основа региональной идентичности (Heimat)", count: 210 },
-        { text: "Пережиток, уступающий литературному стандарту", count: 40 },
-        { text: "Затруднение в межрегиональном общении", count: 15 }
-      ]
     }
-  };
+    return 0;
+  }
 
-  var userVotes = JSON.parse(localStorage.getItem("dialect_user_votes")) || {};
+  // Создание сегментов прогресса
+  function buildProgressDots() {
+    if (!progressContainer) return;
+    progressContainer.innerHTML = '';
+    for (var i = 0; i < totalSlides; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'progress-dot';
+      dot.setAttribute('data-index', i);
+      dot.title = 'Слайд ' + (i + 1) + ': ' + getSlideTitle(i);
+      dot.addEventListener('click', function (e) {
+        var idx = parseInt(this.getAttribute('data-index'), 10);
+        goToSlide(idx);
+      });
+      progressContainer.appendChild(dot);
+    }
+  }
 
-  function render() {
-    container.innerHTML = "";
-    Object.keys(state).forEach(function (key) {
-      var q = state[key];
-      var total = q.answers.reduce(function (sum, item) { return sum + item.count; }, 0);
-      var voted = userVotes[key] !== undefined;
+  // Создание списка миниатюр в шторке навигатора
+  function buildDrawerList() {
+    if (!drawerList) return;
+    drawerList.innerHTML = '';
+    slides.forEach(function (slide, idx) {
+      var title = getSlideTitle(idx);
+      var act = slide.getAttribute('data-act') || ('Слайд ' + (idx + 1));
 
-      var block = document.createElement("div");
-      block.className = "survey-question";
+      var item = document.createElement('div');
+      item.className = 'drawer-item';
+      item.setAttribute('data-index', idx);
 
-      var h4 = document.createElement("h4");
-      h4.textContent = q.title;
-      block.appendChild(h4);
+      item.innerHTML =
+        '<div class="drawer-item-num">' + (idx + 1) + '</div>' +
+        '<div class="drawer-item-text">' +
+          '<strong>' + title + '</strong>' +
+          '<span>' + act + '</span>' +
+        '</div>';
 
-      var options = document.createElement("div");
-      options.className = "survey-options";
-
-      q.answers.forEach(function (opt, idx) {
-        var pct = total > 0 ? Math.round((opt.count / total) * 100) : 0;
-        var btn = document.createElement("button");
-        btn.className = "survey-btn" + (voted && userVotes[key] === idx ? " voted" : "");
-        btn.disabled = voted;
-
-        var spanTitle = document.createElement("span");
-        spanTitle.textContent = opt.text;
-        btn.appendChild(spanTitle);
-
-        if (voted) {
-          var spanPct = document.createElement("strong");
-          spanPct.textContent = pct + "% (" + opt.count + ")";
-          btn.appendChild(spanPct);
-        }
-
-        btn.addEventListener("click", function () {
-          opt.count += 1;
-          userVotes[key] = idx;
-          localStorage.setItem("dialect_poll_v1", JSON.stringify(state));
-          localStorage.setItem("dialect_user_votes", JSON.stringify(userVotes));
-          render();
-        });
-
-        options.appendChild(btn);
-
-        if (voted) {
-          var bar = document.createElement("div");
-          bar.className = "survey-bar";
-          bar.style.width = pct + "%";
-          options.appendChild(bar);
-        }
+      item.addEventListener('click', function () {
+        goToSlide(idx);
+        closeDrawer();
       });
 
-      block.appendChild(options);
-      container.appendChild(block);
+      drawerList.appendChild(item);
     });
   }
 
-  render();
-}
+  function getSlideTitle(idx) {
+    var slide = slides[idx];
+    if (!slide) return '';
+    var titleEl = slide.querySelector('.slide-title');
+    return titleEl ? titleEl.textContent.trim() : 'Слайд ' + (idx + 1);
+  }
 
-function initGlossary() {
-  var input = document.getElementById("glossary-search");
-  var list = document.getElementById("glossary-terms");
-  if (!input || !list) return;
+  // Переход на слайд
+  function goToSlide(targetIndex, updateHash) {
+    if (updateHash === undefined) updateHash = true;
+    if (targetIndex < 0) targetIndex = 0;
+    if (targetIndex >= totalSlides) targetIndex = totalSlides - 1;
 
-  input.addEventListener("input", function () {
-    var q = input.value.toLowerCase().trim();
-    var entries = list.querySelectorAll(".term-entry");
-    entries.forEach(function (el) {
-      var match = el.textContent.toLowerCase().indexOf(q) !== -1;
-      el.style.display = match ? "block" : "none";
-    });
-  });
-}
+    currentSlideIndex = targetIndex;
 
-function initNavDropdown() {
-  var dropdowns = document.querySelectorAll(".dropdown");
-  dropdowns.forEach(function (dropdown) {
-    var trigger = dropdown.querySelector("a");
-    var menu = dropdown.querySelector(".dropdown-menu");
-    if (!trigger || !menu) return;
-
-    var closeTimer = null;
-
-    function openMenu() {
-      if (closeTimer) {
-        clearTimeout(closeTimer);
-        closeTimer = null;
-      }
-      dropdown.classList.add("is-open");
-    }
-
-    function scheduleClose() {
-      if (closeTimer) clearTimeout(closeTimer);
-      closeTimer = setTimeout(function () {
-        if (!dropdown.classList.contains("is-pinned")) {
-          dropdown.classList.remove("is-open");
-        }
-      }, 700);
-    }
-
-    dropdown.addEventListener("mouseenter", openMenu);
-    dropdown.addEventListener("mouseleave", scheduleClose);
-    menu.addEventListener("mouseenter", openMenu);
-    menu.addEventListener("mouseleave", scheduleClose);
-
-    // Click toggles permanent open state so the user can freely move mouse over window
-    trigger.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (dropdown.classList.contains("is-pinned")) {
-        dropdown.classList.remove("is-pinned");
-        dropdown.classList.remove("is-open");
+    // Переключение классов слайдов
+    slides.forEach(function (slide, idx) {
+      if (idx === currentSlideIndex) {
+        slide.classList.add('active');
       } else {
-        dropdown.classList.add("is-pinned");
-        dropdown.classList.add("is-open");
+        slide.classList.remove('active');
       }
     });
-  });
 
-  document.addEventListener("click", function (e) {
-    if (!e.target.closest(".dropdown")) {
-      document.querySelectorAll(".dropdown").forEach(function (d) {
-        d.classList.remove("is-open");
-        d.classList.remove("is-pinned");
+    // Обновление HUD
+    if (currentSlideNumEl) {
+      currentSlideNumEl.textContent = currentSlideIndex + 1;
+    }
+
+    var activeSlide = slides[currentSlideIndex];
+    if (activeSlide && actIndicatorEl) {
+      var actText = activeSlide.getAttribute('data-act');
+      if (actText) {
+        actIndicatorEl.textContent = actText;
+      }
+    }
+
+    // Состояние кнопок Назад / Вперед
+    if (btnPrev) btnPrev.disabled = (currentSlideIndex === 0);
+    if (btnNext) btnNext.disabled = (currentSlideIndex === totalSlides - 1);
+
+    // Обновление прогресс-бара
+    var dots = progressContainer ? progressContainer.querySelectorAll('.progress-dot') : [];
+    dots.forEach(function (dot, idx) {
+      dot.classList.remove('active', 'passed');
+      if (idx < currentSlideIndex) {
+        dot.classList.add('passed');
+      } else if (idx === currentSlideIndex) {
+        dot.classList.add('active');
+      }
+    });
+
+    // Обновление активного элемента в шторке
+    var drawerItems = drawerList ? drawerList.querySelectorAll('.drawer-item') : [];
+    drawerItems.forEach(function (item, idx) {
+      if (idx === currentSlideIndex) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // Специфика слайда 5 (Колумб)
+    if (currentSlideIndex === 4) { // Слайд 5 (0-indexed 4)
+      if (columbusAvatar && !columbusAvatar.classList.contains('is-talking')) {
+        columbusAvatar.classList.add('is-talking');
+        if (btnColumbusToggle) btnColumbusToggle.textContent = 'Анимация речи: Вкл';
+      }
+    }
+
+    // Хеш в URL для удобства ссылок и возврата
+    if (updateHash) {
+      history.replaceState(null, '', '#slide-' + (currentSlideIndex + 1));
+    }
+  }
+
+  function nextSlide() {
+    if (currentSlideIndex < totalSlides - 1) {
+      goToSlide(currentSlideIndex + 1);
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlideIndex > 0) {
+      goToSlide(currentSlideIndex - 1);
+    }
+  }
+
+  // Управление шторкой навигации
+  function openDrawer() {
+    if (drawerBackdrop) {
+      drawerBackdrop.classList.add('open');
+    }
+  }
+
+  function closeDrawer() {
+    if (drawerBackdrop) {
+      drawerBackdrop.classList.remove('open');
+    }
+  }
+
+  function toggleDrawer() {
+    if (drawerBackdrop && drawerBackdrop.classList.contains('open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  }
+
+  // Управление полноэкранным режимом
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function (err) {
+        console.warn('Не удалось войти в полноэкранный режим:', err);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+  function updateFullscreenUI() {
+    var isFs = !!document.fullscreenElement;
+    if (fsIcon) fsIcon.textContent = isFs ? '🗗' : '⛶';
+    if (fsText) fsText.textContent = isFs ? 'Окно' : 'Экран';
+  }
+
+  // Управление анимацией говорящего Колумба
+  function toggleColumbusSpeech() {
+    if (!columbusAvatar) return;
+    var isTalking = columbusAvatar.classList.toggle('is-talking');
+    if (btnColumbusToggle) {
+      btnColumbusToggle.textContent = isTalking ? 'Анимация речи: Вкл' : 'Анимация речи: Пауза';
+    }
+  }
+
+  // Привязка событий
+  function bindEvents() {
+    if (btnPrev) btnPrev.addEventListener('click', prevSlide);
+    if (btnNext) btnNext.addEventListener('click', nextSlide);
+
+    if (btnFullscreen) btnFullscreen.addEventListener('click', toggleFullscreen);
+    document.addEventListener('fullscreenchange', updateFullscreenUI);
+
+    if (btnThumbnails) btnThumbnails.addEventListener('click', toggleDrawer);
+    if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
+
+    if (drawerBackdrop) {
+      drawerBackdrop.addEventListener('click', function (e) {
+        if (e.target === drawerBackdrop) {
+          closeDrawer();
+        }
       });
     }
-  });
-}
+
+    if (btnColumbusToggle) {
+      btnColumbusToggle.addEventListener('click', toggleColumbusSpeech);
+    }
+
+    // Клавиатурные шорткаты
+    document.addEventListener('keydown', function (e) {
+      // Игнорируем ввод, если фокус в инпуте или текстарее
+      var tag = e.target.tagName.toLowerCase();
+      if (tag === 'input' || tag === 'textarea') return;
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+        case 'PageDown':
+        case ' ': // Space
+          e.preventDefault();
+          nextSlide();
+          break;
+
+        case 'ArrowLeft':
+        case 'ArrowUp':
+        case 'PageUp':
+          e.preventDefault();
+          prevSlide();
+          break;
+
+        case 'Home':
+          e.preventDefault();
+          goToSlide(0);
+          break;
+
+        case 'End':
+          e.preventDefault();
+          goToSlide(totalSlides - 1);
+          break;
+
+        case 'f':
+        case 'F':
+        case 'а':
+        case 'А': // Русская раскладка для клавиши F
+          toggleFullscreen();
+          break;
+
+        case 'm':
+        case 'M':
+        case 'ь':
+        case 'Ь':
+          toggleDrawer();
+          break;
+
+        case 'Escape':
+          closeDrawer();
+          break;
+      }
+    });
+
+    // Тач / Свайп на мобильных устройствах
+    var touchStartX = 0;
+    var touchStartY = 0;
+
+    document.addEventListener('touchstart', function (e) {
+      if (!e.changedTouches || e.changedTouches.length === 0) return;
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function (e) {
+      if (!e.changedTouches || e.changedTouches.length === 0) return;
+      var touchEndX = e.changedTouches[0].screenX;
+      var touchEndY = e.changedTouches[0].screenY;
+      var diffX = touchEndX - touchStartX;
+      var diffY = touchEndY - touchStartY;
+
+      // Горизонтальный свайп с порогом 50px
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX < 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    }, { passive: true });
+
+    // Реакция на изменение hash в URL
+    window.addEventListener('hashchange', function () {
+      var slideNum = parseHash();
+      if (slideNum !== currentSlideIndex) {
+        goToSlide(slideNum, false);
+      }
+    });
+  }
+
+  // Запуск при загрузке документа
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
