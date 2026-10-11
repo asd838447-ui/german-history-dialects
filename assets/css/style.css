@@ -909,7 +909,23 @@ body { display: flex; flex-direction: column; }
 }
 
 /* ---------- Полноэкранный режим: больше места под содержание ---------- */
-:fullscreen .presentation-viewport { padding: 0.4rem 3.2rem; }
+:fullscreen .presentation-viewport,
+:-webkit-full-screen .presentation-viewport,
+:-moz-full-screen .presentation-viewport,
+:-ms-fullscreen .presentation-viewport,
+body.pseudo-fullscreen .presentation-viewport {
+  padding: 0.4rem 3.2rem;
+}
+
+body.pseudo-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  background: var(--paper) !important;
+  overflow: hidden !important;
+}
 
 /* ---------- Адаптивность ---------- */
 @media (max-width: 1100px) {

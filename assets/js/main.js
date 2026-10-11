@@ -197,15 +197,71 @@
   function toggleDrawer() { els.drawer.classList.toggle('open'); }
 
   /* ---------- Полный экран ---------- */
+  function isFullscreen() {
+    var d = document;
+    return !!(
+      d.fullscreenElement ||
+      d.webkitFullscreenElement ||
+      d.mozFullScreenElement ||
+      d.msFullscreenElement ||
+      (d.body && d.body.classList.contains('pseudo-fullscreen'))
+    );
+  }
+
   function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen().catch(function () {});
+    var doc = document;
+    var docEl = doc.documentElement;
+
+    if (!isFullscreen()) {
+      var req = docEl.requestFullscreen ||
+                docEl.webkitRequestFullscreen ||
+                docEl.webkitRequestFullScreen ||
+                docEl.mozRequestFullScreen ||
+                docEl.msRequestFullscreen;
+
+      if (req) {
+        try {
+          var p = req.call(docEl);
+          if (p && p.catch) {
+            p.catch(function () {
+              doc.body.classList.add('pseudo-fullscreen');
+              onFullscreen();
+            });
+          }
+        } catch (e) {
+          doc.body.classList.add('pseudo-fullscreen');
+          onFullscreen();
+        }
+      } else {
+        doc.body.classList.add('pseudo-fullscreen');
+        onFullscreen();
+      }
     } else {
-      document.exitFullscreen && document.exitFullscreen();
+      if (doc.body.classList.contains('pseudo-fullscreen')) {
+        doc.body.classList.remove('pseudo-fullscreen');
+      }
+      var exit = doc.exitFullscreen ||
+                 doc.webkitExitFullscreen ||
+                 doc.webkitCancelFullScreen ||
+                 doc.mozCancelFullScreen ||
+                 doc.msExitFullscreen;
+      if (exit && (doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement)) {
+        try {
+          var p = exit.call(doc);
+          if (p && p.catch) p.catch(function () {});
+        } catch (e) {}
+      }
+      onFullscreen();
     }
   }
+
   function onFullscreen() {
-    els.fsText.textContent = document.fullscreenElement ? 'Выйти' : 'На весь экран';
+    var active = isFullscreen();
+    if (els.fsText) els.fsText.textContent = active ? 'Выйти' : 'На весь экран';
+    if (els.fsBtn) {
+      els.fsBtn.title = active ? 'Выйти из полноэкранного режима (F)' : 'Полный экран (F)';
+      els.fsBtn.classList.toggle('is-active', active);
+    }
   }
 
   /* ---------- Колумб ---------- */
@@ -324,6 +380,9 @@
 
     els.fsBtn.addEventListener('click', toggleFullscreen);
     document.addEventListener('fullscreenchange', onFullscreen);
+    document.addEventListener('webkitfullscreenchange', onFullscreen);
+    document.addEventListener('mozfullscreenchange', onFullscreen);
+    document.addEventListener('MSFullscreenChange', onFullscreen);
 
     els.tocBtn.addEventListener('click', toggleDrawer);
     els.drawerClose.addEventListener('click', closeDrawer);
@@ -350,12 +409,25 @@
       var k = e.key;
       var isShiftNine = e.shiftKey && (e.code === 'Digit9' || e.code === 'Numpad9' || k === '9' || k === '(');
       var isShiftR = e.shiftKey && (e.code === 'KeyR' || /^[rRкК]$/.test(k));
+      var isKeyF = e.code === 'KeyF' || /^[fFаАфФ]$/.test(k) || k === 'F11';
+      var isKeyM = e.code === 'KeyM' || /^[mMьЬмМ]$/.test(k);
 
       // Если открыто окно источников
       if (sourcesModalOpen()) {
         if (k === 'Escape') {
           e.preventDefault();
           closeSourcesModal();
+          return;
+        }
+        if (isKeyM) {
+          e.preventDefault();
+          closeSourcesModal();
+          toggleDrawer();
+          return;
+        }
+        if (isKeyF) {
+          e.preventDefault();
+          toggleFullscreen();
           return;
         }
       }
@@ -365,8 +437,20 @@
         if (k === 'Escape' || isShiftNine) {
           e.preventDefault();
           closeModal();
+          return;
         }
-        else if (k === '+' || k === '=') zoomAt(1.4);
+        if (isKeyM) {
+          e.preventDefault();
+          closeModal();
+          toggleDrawer();
+          return;
+        }
+        if (isKeyF) {
+          e.preventDefault();
+          toggleFullscreen();
+          return;
+        }
+        if (k === '+' || k === '=') zoomAt(1.4);
         else if (k === '-' || k === '_') zoomAt(1 / 1.4);
         else if (k === '0') resetView();
         return; // в режиме просмотра слайды не листаются
@@ -388,7 +472,13 @@
 
       if (k === 'Escape') {
         if (sourcesModalOpen()) { closeSourcesModal(); return; }
-        closeDrawer();
+        if (modalOpen()) { closeModal(); return; }
+        if (els.drawer.classList.contains('open')) { closeDrawer(); return; }
+        if (document.body && document.body.classList.contains('pseudo-fullscreen')) {
+          document.body.classList.remove('pseudo-fullscreen');
+          onFullscreen();
+          return;
+        }
         return;
       }
 
@@ -397,8 +487,8 @@
       else if (k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); prev(); }
       else if (k === 'Home') { e.preventDefault(); go(0); }
       else if (k === 'End') { e.preventDefault(); go(total - 1); }
-      else if (/^[fFаА]$/.test(k)) toggleFullscreen();
-      else if (/^[mMьЬ]$/.test(k)) toggleDrawer();
+      else if (isKeyF) { e.preventDefault(); toggleFullscreen(); }
+      else if (isKeyM) { e.preventDefault(); toggleDrawer(); }
     });
 
     // Свайпы на телефоне/планшете
