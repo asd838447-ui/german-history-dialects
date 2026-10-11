@@ -30,7 +30,14 @@
     modal: $('image-modal'),
     canvas: $('modal-canvas'),
     modalImg: $('modal-img'),
-    modalCaption: $('modal-caption')
+    modalCaption: $('modal-caption'),
+    musicBtn: $('btn-music'),
+    musicText: $('music-text'),
+    sourcesBtn: $('btn-sources'),
+    sourcesModal: $('sources-modal'),
+    sourcesCloseBtn: $('btn-sources-close'),
+    sourcesFooterCloseBtn: $('btn-sources-footer-close'),
+    drawerSources: $('btn-drawer-sources')
   };
 
   function titleOf(i) {
@@ -100,7 +107,79 @@
     // Колумб «говорит» каждый раз, когда открывается его слайд
     if (els.avatar && slides[i].contains(els.avatar)) setTalking(true);
 
+    // Переключение саундтрека при смене слайдов (Колумб -> Пираты, остальные -> фон)
+    updateMusicForSlide(i);
+
     if (!keepHash) history.replaceState(null, '', '#slide-' + (i + 1));
+  }
+
+  /* ---------- Музыкальное сопровождение ---------- */
+  var bgAudio = new Audio('assets/audio/background.mp3');
+  bgAudio.loop = true;
+  bgAudio.volume = 0.55;
+
+  var columbusAudio = new Audio('assets/audio/columbus.mp3');
+  columbusAudio.loop = true;
+  columbusAudio.volume = 0.65;
+
+  var musicEnabled = false;
+
+  function playAudio(target, other) {
+    if (other && !other.paused) other.pause();
+    if (target && target.paused) {
+      var p = target.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+  }
+
+  function updateMusicForSlide(slideIdx) {
+    if (!musicEnabled) return;
+    var s = slides[slideIdx];
+    var isColumbus = s && s.contains(els.avatar);
+    if (isColumbus) {
+      columbusAudio.currentTime = 0;
+      playAudio(columbusAudio, bgAudio);
+    } else {
+      playAudio(bgAudio, columbusAudio);
+    }
+  }
+
+  function toggleMusic() {
+    musicEnabled = !musicEnabled;
+    if (els.musicBtn) {
+      els.musicBtn.classList.toggle('is-playing', musicEnabled);
+      if (els.musicText) els.musicText.textContent = musicEnabled ? 'Музыка: Вкл' : 'Музыка';
+      els.musicBtn.title = musicEnabled ? 'Выключить музыку (Shift + R)' : 'Включить музыку (Shift + R)';
+    }
+
+    if (musicEnabled) {
+      var s = slides[current];
+      var isColumbus = s && s.contains(els.avatar);
+      if (isColumbus) {
+        columbusAudio.currentTime = 0;
+        playAudio(columbusAudio, bgAudio);
+      } else {
+        playAudio(bgAudio, columbusAudio);
+      }
+    } else {
+      if (bgAudio) bgAudio.pause();
+      if (columbusAudio) columbusAudio.pause();
+    }
+  }
+
+  /* ---------- Модальное окно источников ---------- */
+  function openSourcesModal() {
+    if (els.sourcesModal) els.sourcesModal.classList.add('open');
+  }
+  function closeSourcesModal() {
+    if (els.sourcesModal) els.sourcesModal.classList.remove('open');
+  }
+  function sourcesModalOpen() {
+    return els.sourcesModal && els.sourcesModal.classList.contains('open');
+  }
+  function toggleSourcesModal() {
+    if (sourcesModalOpen()) closeSourcesModal();
+    else openSourcesModal();
   }
 
   function next() { if (current < total - 1) go(current + 1); }
@@ -254,11 +333,34 @@
       setTalking(!els.avatar.classList.contains('is-talking'));
     });
 
+    if (els.musicBtn) els.musicBtn.addEventListener('click', toggleMusic);
+    if (els.sourcesBtn) els.sourcesBtn.addEventListener('click', openSourcesModal);
+    if (els.sourcesCloseBtn) els.sourcesCloseBtn.addEventListener('click', closeSourcesModal);
+    if (els.sourcesFooterCloseBtn) els.sourcesFooterCloseBtn.addEventListener('click', closeSourcesModal);
+    if (els.sourcesModal) els.sourcesModal.addEventListener('click', function (e) {
+      if (e.target === els.sourcesModal) closeSourcesModal();
+    });
+    if (els.drawerSources) els.drawerSources.addEventListener('click', function () {
+      closeDrawer();
+      openSourcesModal();
+    });
+
     document.addEventListener('keydown', function (e) {
       if (/input|textarea/i.test(e.target.tagName)) return;
       var k = e.key;
       var isShiftNine = e.shiftKey && (e.code === 'Digit9' || e.code === 'Numpad9' || k === '9' || k === '(');
+      var isShiftR = e.shiftKey && (e.code === 'KeyR' || /^[rRкК]$/.test(k));
 
+      // Если открыто окно источников
+      if (sourcesModalOpen()) {
+        if (k === 'Escape') {
+          e.preventDefault();
+          closeSourcesModal();
+          return;
+        }
+      }
+
+      // Если открыт просмотр иллюстрации
       if (modalOpen()) {
         if (k === 'Escape' || isShiftNine) {
           e.preventDefault();
@@ -270,13 +372,25 @@
         return; // в режиме просмотра слайды не листаются
       }
 
+      // Горячая клавиша Shift + R: переключение музыки
+      if (isShiftR) {
+        e.preventDefault();
+        toggleMusic();
+        return;
+      }
+
+      // Горячая клавиша Shift + 9: включить/выключить картинку
       if (isShiftNine) {
         e.preventDefault();
         togglePicture();
         return;
       }
 
-      if (k === 'Escape') { closeDrawer(); return; }
+      if (k === 'Escape') {
+        if (sourcesModalOpen()) { closeSourcesModal(); return; }
+        closeDrawer();
+        return;
+      }
 
       // ↑ ↓ оставлены для прокрутки слайда, если он не помещается
       if (k === 'ArrowRight' || k === 'PageDown' || k === ' ') { e.preventDefault(); next(); }

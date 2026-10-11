@@ -19,6 +19,14 @@
     </div>
     <div class="header-controls">
       <div class="slide-counter"><span id="current-slide-num">1</span> / 10</div>
+      <button class="hud-btn" id="btn-music" title="Включить музыку (Shift + R)">
+        <svg viewBox="0 0 24 24" class="music-icon"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        <span id="music-text">Музыка</span>
+      </button>
+      <button class="hud-btn" id="btn-sources" title="Источники и литература">
+        <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+        <span>Источники</span>
+      </button>
       <button class="hud-btn" id="btn-thumbnails" title="Оглавление (M)">
         <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
         <span>Оглавление</span>
@@ -453,7 +461,7 @@
     <button class="nav-arrow-btn" id="btn-prev" disabled title="Назад (←)">‹ Назад</button>
     <div class="progress-container">
       <div class="slide-pills-bar" id="slide-pills-bar"></div>
-      <div class="hotkey-hint">← → или пробел — листать · F — на весь экран · M — оглавление · Shift + 9 — включить картинку</div>
+      <div class="hotkey-hint">← → или пробел — листать · F — на весь экран · M — оглавление · Shift + 9 — картинка · Shift + R — музыка</div>
     </div>
     <button class="nav-arrow-btn" id="btn-next" title="Далее (→)">Далее ›</button>
   </footer>
@@ -482,9 +490,113 @@
         <button class="drawer-close" id="btn-drawer-close" aria-label="Закрыть">✕</button>
       </div>
       <div class="drawer-list" id="drawer-list"></div>
+      <div class="drawer-sources-box">
+        <button class="drawer-sources-btn" id="btn-drawer-sources">
+          📚 Источники и материалы проекта
+        </button>
+      </div>
     </aside>
   </div>
 
-  <script src="assets/js/main.js?v=6.0"></script>
+  <!-- Модальное окно: Источники и литература -->
+  <div class="sources-modal-backdrop" id="sources-modal" role="dialog" aria-modal="true" aria-label="Источники и литература">
+    <div class="sources-modal-box">
+      <div class="sources-modal-header">
+        <div class="sources-header-info">
+          <span class="sources-badge">Библиография</span>
+          <h2 class="sources-title">Источники и материалы проекта</h2>
+          <p class="sources-subtitle">Научные публикации, архивные исследования и энциклопедические статьи, использованные при подготовке материалов</p>
+        </div>
+        <button class="sources-close-btn" id="btn-sources-close" aria-label="Закрыть (Esc)">✕</button>
+      </div>
+
+      <div class="sources-grid">
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Академический очерк</span>
+            <span class="source-domain">ancient.hist.msu.ru</span>
+          </div>
+          <h3 class="source-card-title">Цивилизации доколумбовой Америки: краткий обзор</h3>
+          <p class="source-card-inst">Исторический факультет МГУ им. М.В. Ломоносова</p>
+          <p class="source-card-desc">Академический очерк кафедры древней истории: Берингия, периодизация заселения континента, возникновение ранних очагов земледелия и протогородов Северной и Южной Америки.</p>
+          <a class="source-card-link" href="http://ancient.hist.msu.ru/tsivilizatsii-dokolumbovoj-ameriki-kratkij-obzor" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Этнография и история</span>
+            <span class="source-domain">indiansworld.org</span>
+          </div>
+          <h3 class="source-card-title">История доколумбовых цивилизаций</h3>
+          <p class="source-card-inst">Мануэль Галич · Портал «Мир индейцев»</p>
+          <p class="source-card-desc">Фундаментальный очерк о материальной и духовной культуре коренных народов: общинный уклад, межплеменные союзы, пояса вампум, традиции и миропонимание.</p>
+          <a class="source-card-link" href="http://www.indiansworld.org/galich9.html" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Культурология</span>
+            <span class="source-domain">kulturologia.ru</span>
+          </div>
+          <h3 class="source-card-title">Культура, быт и традиционное мировоззрение</h3>
+          <p class="source-card-inst">Культурология.РФ</p>
+          <p class="source-card-desc">Исследование обычаев, сакрального отношения коренных американцев к земле и природе, символизма жилищ (типи, пуэбло), понятий Вакан Танка и Маниту.</p>
+          <a class="source-card-link" href="https://kulturologia.ru/blogs/030921/50979/" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Международный вестник</span>
+            <span class="source-domain">tvbrics.com</span>
+          </div>
+          <h3 class="source-card-title">Индейцы и их культура: богатое наследие коренных народов</h3>
+          <p class="source-card-inst">Медиасеть TV BRICS</p>
+          <p class="source-card-desc">Материалы о сохранении самобытности коренных наций, традиционных ремёслах, обрядах и положении коренных сообществ в современном мире.</p>
+          <a class="source-card-link" href="https://tvbrics.com/news/indeytsy-i-ikh-kultura-izuchite-bogatoe-nasledie-korennykh-narodov-brazilii/" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Исторический очерк</span>
+            <span class="source-domain">dtf.ru</span>
+          </div>
+          <h3 class="source-card-title">Жизнь индейцев США до прихода европейцев</h3>
+          <p class="source-card-inst">DTF · Исторический спецпроект</p>
+          <p class="source-card-desc">Подробный обзор доколумбовых культурных ареалов: земледельческая триада «Три сестры», устройство поселений Кахокии, навигация, языковые семьи и межплеменная торговля.</p>
+          <a class="source-card-link" href="https://dtf.ru/flood/5021374-zhizn-indeytsev-ssha-do-prikhoda-evropeytsev" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+
+        <article class="source-card">
+          <div class="source-card-top">
+            <span class="source-tag">Энциклопедия</span>
+            <span class="source-domain">wikipedia.org</span>
+          </div>
+          <h3 class="source-card-title">Эпоха Возрождения (Ренессанс)</h3>
+          <p class="source-card-inst">Свободная энциклопедия Википедия</p>
+          <p class="source-card-desc">Научный и экономический подъём Европы XV–XVI веков, развитие астрономии, навигации, флорентийской картографии и предпосылки морских экспедиций Христофора Колумба.</p>
+          <a class="source-card-link" href="https://ru.wikipedia.org/wiki/%D0%92%D0%BE%D0%B7%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5" target="_blank" rel="noopener noreferrer">
+            Открыть публикацию ↗
+          </a>
+        </article>
+      </div>
+
+      <div class="sources-modal-footer">
+        <span class="sources-footer-note">Все материалы приведены в ознакомительных и образовательных целях</span>
+        <button class="sources-footer-close-btn" id="btn-sources-footer-close">Закрыть окно</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js?v=7.0"></script>
 </body>
 </html>
